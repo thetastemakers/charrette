@@ -22,11 +22,11 @@ jobs:
       run:
         working-directory: apps/pitch
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: .bun-version
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version-file: .node-version
       - run: bun install --frozen-lockfile
@@ -38,13 +38,13 @@ jobs:
           SITE_URL: ${{ vars.SITE_URL }}
       - run: bunx playwright install --with-deps chromium
       - run: bun run test:e2e
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: playwright-report
           path: apps/pitch/playwright-report
           retention-days: 7
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: pitch
           path: apps/pitch/dist
