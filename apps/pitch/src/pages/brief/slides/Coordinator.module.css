@@ -1,0 +1,67 @@
+/* 06 · answer two: the graph grows from evidence, one step per snap */
+
+.flow { background: var(--ink); color: #fff; }
+.kicker { color: var(--lime); margin-bottom: 18px; }
+.head { margin-bottom: 40px; }
+.flow h2 { font-size: clamp(34px, 3.6vw, 52px); margin: 0; max-width: 24ch; }
+.task { display: flex; gap: 14px; align-items: baseline; margin: 18px 0 0; font-size: 16px; line-height: 1.4; color: #9a9aa0; }
+.task span { flex: none; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); background: var(--hot); padding: 3px 7px; border-radius: 3px; }
+
+.dag { display: block; width: 100%; height: auto; max-height: calc(100vh - 470px); font-family: var(--sans); overflow: visible; }
+.e { fill: none; stroke: rgba(255, 255, 255, .26); stroke-width: 2; }
+.e.app { stroke: var(--lime); }
+.e.human { stroke: var(--hot); }
+.e.new { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 450ms cubic-bezier(.5, 0, .2, 1) forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.n rect { fill: var(--night-2); }
+.nk { font-size: 20px; font-weight: 800; fill: #fff; letter-spacing: -.025em; }
+.nw { font: 500 12px var(--mono); fill: #8c8c92; }
+.n.coord rect { fill: transparent; stroke: rgba(255, 255, 255, .3); stroke-width: 1.5; }
+.n.app rect { stroke: var(--lime); stroke-width: 1.5; }
+.n.human rect { fill: var(--hot); stroke: none; }
+.n.human text { fill: var(--ink); }
+.n.cur rect { fill: var(--lime); stroke: none; filter: drop-shadow(0 0 22px rgba(214, 255, 69, .4)); }
+.n.human.cur rect { fill: var(--hot); filter: drop-shadow(0 0 22px rgba(255, 90, 31, .5)); }
+.n.cur text { fill: var(--ink); }
+.n.cur { animation: pop 380ms cubic-bezier(.3, 1.4, .5, 1); transform-box: fill-box; transform-origin: center; }
+@keyframes pop { from { opacity: 0; transform: scale(.92); } }
+.n.past { opacity: .82; }
+.ghost rect { fill: none; stroke: rgba(255, 255, 255, .22); stroke-width: 1.5; stroke-dasharray: 4 5; }
+.ghost text { font: 500 20px var(--mono); fill: #5c5c62; }
+
+/* the step being told: one line of type under the graph, like a subtitle */
+.card { display: grid; grid-template-columns: 96px minmax(0, 300px) minmax(0, 1fr); gap: 28px; align-items: baseline; margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--night-rule); min-height: 112px; }
+.fc-n { margin: 0; font: 500 13px var(--mono); color: #8e8e94; }
+.fc-n b { font: 900 34px var(--sans); letter-spacing: -.05em; color: #fff; margin-right: 4px; }
+.fc-h { margin: 0; font-size: 28px; font-weight: 900; letter-spacing: -.04em; line-height: 1.05; }
+.fc-w { margin: 6px 0 0; font: 500 12px/1.45 var(--mono); color: #9a9aa0; }
+.fc-w.human { color: var(--hot); }
+.fc-p { margin: 0; font-size: 17px; line-height: 1.5; color: #d2d2d6; max-width: 62ch; }
+.why { display: block; margin-top: 8px; font-size: 15px; color: #9a9aa0; }
+.why b { color: var(--lime); font-weight: 700; }
+.why.human b { color: var(--hot); }
+
+/* the same story as a list: visually hidden where the graph shows, the figure itself on small screens */
+.list { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+@media (min-width: 901px) and (min-height: 620px) and (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  .stick { padding: 80px 0 48px; }
+}
+@media (max-width: 1100px) {
+  .card { grid-template-columns: 80px minmax(0, 1fr); }
+  .fc-p { grid-column: 2; }
+}
+@media (max-width: 900px) {
+  .card, .dag { display: none; }
+  .head { margin-bottom: 0; }
+  .list { position: static; width: auto; height: auto; overflow: visible; clip-path: none; white-space: normal; display: block; list-style: none; max-width: var(--max); margin: 36px auto 0; padding: 0 var(--gut); }
+  .list li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 2px 12px; padding: 16px 0; border-top: 1px solid var(--night-rule); }
+  .list li > :not(.ln) { grid-column: 2; }
+  .ln { grid-row: 1 / span 4; font: 500 12px var(--mono); color: #8e8e94; padding-top: 4px; }
+  .list b { font-size: 19px; font-weight: 800; letter-spacing: -.02em; }
+  .lw { font: 500 11.5px var(--mono); color: var(--lime); }
+  .lw.human { color: var(--hot); }
+  .list p { margin: 4px 0 0; font-size: 15px; line-height: 1.45; color: #c4c4c8; }
+  .la { display: inline-block; margin-bottom: 4px; font: 500 10.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink); background: var(--lime); padding: 2px 7px; border-radius: 3px; justify-self: start; }
+  .la.human { background: var(--hot); }
+}

@@ -1,0 +1,33 @@
+/* The only global CSS: tokens, a small reset, focus and the skip link.
+   Everything else lives in a CSS module next to the component it styles. */
+
+:root {
+  --ink: #101012; --ink-2: #3c3c42; --ink-3: #64646b; --ink-4: #8c8c92;
+  --cream: #f2efe6; --white: #fbfaf6; --stone: #e2ded3;
+  --hot: #ff5a1f; --hot-ink: #bd390a; --cobalt: #2b3bff; --lime: #d6ff45;
+  --night: #16161a; --night-2: #1f1f24; --night-rule: rgba(255, 255, 255, .14);
+  --sans: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace;
+  --gut: 56px; --max: 1240px;
+  --edge: max(var(--gut), calc((100vw - var(--max)) / 2 + var(--gut)));
+}
+@media (max-width: 900px) { :root { --gut: 28px; } }
+@media (max-width: 760px) { :root { --gut: 16px; } }
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--cream); color: var(--ink); font: 400 18px/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; height: auto; }
+picture { display: block; }
+b, strong { font-weight: 700; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip { position: fixed; left: var(--gut); top: 12px; z-index: 30; padding: 10px 14px; background: var(--ink); color: #fff; font: 500 13px var(--mono); text-decoration: none; border-radius: 4px; transform: translateY(-160%); transition: transform 150ms; }
+.skip:focus { transform: none; }
+main:focus { outline: none; }
+:focus-visible { outline: 3px solid var(--cobalt); outline-offset: 3px; border-radius: 2px; }
+[data-tone='dark'] :focus-visible { outline-color: var(--lime); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

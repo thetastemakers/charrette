@@ -1,0 +1,20 @@
+/* 10 · the market */
+
+.market { background: var(--cobalt); color: #fff; }
+.kicker { color: var(--lime); }
+.body { color: #dfe2ff; max-width: 60ch; }
+.market h2 { max-width: 22ch; }
+.tbl-wrap { overflow-x: auto; background: var(--white); color: var(--ink); border-radius: 10px; }
+.tbl { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.4; }
+.tbl th { text-align: left; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); padding: 16px 16px 12px; border-bottom: 2px solid var(--ink); white-space: nowrap; }
+.tbl td { padding: 11px 16px; border-bottom: 1px solid rgba(16, 16, 18, .1); color: var(--ink-2); }
+.tbl td:first-child { color: var(--ink); font-weight: 800; white-space: nowrap; }
+.tbl tr.us td { background: var(--lime); color: var(--ink); border-bottom: 0; font-weight: 600; }
+.lock::before, .free::before, .k-lock, .k-free { content: ''; display: inline-block; width: 9px; height: 9px; margin-right: 8px; }
+.lock::before, .k-lock { background: #b3b3b8; }
+.free::before, .k-free { background: var(--hot); }
+.tbl tr.us .free::before { background: var(--ink); }
+.key { font: 400 12px var(--mono); color: #cfd3ff; margin: 14px 0 0; }
+.key .k-free { margin-left: 16px; }
+.pull { margin: 26px 0 0; font-size: clamp(20px, 1.9vw, 26px); line-height: 1.2; letter-spacing: -.03em; font-weight: 500; color: #dfe2ff; max-width: 44ch; }
+.pull b { color: #fff; font-weight: 900; }

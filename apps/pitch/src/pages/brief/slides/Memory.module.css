@@ -1,0 +1,30 @@
+/* 04 · answer one: the knowledge graph */
+
+.a1 { background: var(--cobalt); color: #fff; }
+.kicker { color: var(--lime); }
+.pts li { border-color: rgba(255, 255, 255, .28); color: #dfe2ff; }
+.pts b { color: #fff; }
+.kg { margin: 0; }
+.kg svg { display: block; width: 100%; height: auto; font-family: var(--sans); }
+.kg-e path { fill: none; stroke: rgba(255, 255, 255, .4); stroke-width: 1.5; }
+.kg-x { fill: none; stroke: var(--hot); stroke-width: 3; }
+.kg-hub rect { fill: var(--lime); }
+.kg-hub text { font: 600 12px var(--mono); fill: var(--ink); }
+.kg-n rect { fill: #fff; stroke: #fff; stroke-width: 2; }
+.kg-n text { font-size: 15px; font-weight: 600; fill: var(--ink); letter-spacing: -.01em; }
+.kg-n.obs rect { fill: #3848ff; stroke: #fff; }
+.kg-n.obs text { fill: #fff; }
+.kg-n.prop rect { fill: transparent; stroke: #fff; stroke-dasharray: 5 4; }
+.kg-n.prop text { fill: #fff; }
+.kg-n.ret rect { fill: transparent; stroke: rgba(255, 255, 255, .35); }
+.kg-n.ret text { fill: rgba(255, 255, 255, .5); text-decoration: line-through; }
+.kg-n.con rect { stroke: var(--hot); stroke-width: 3; }
+.kg-t rect { fill: rgba(0, 0, 0, .22); }
+.kg-t text { font: 500 11px var(--mono); fill: #cfd3ff; }
+.kg figcaption { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 18px; font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: #cfd3ff; }
+.lg { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 8px; vertical-align: -1px; border: 2px solid #fff; }
+.lg.canon { background: #fff; }
+.lg.obs { background: #3848ff; }
+.lg.prop { border-style: dashed; }
+.lg.ret { border-color: rgba(255, 255, 255, .35); }
+.lg.con { border-color: var(--hot); background: #fff; }

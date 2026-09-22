@@ -1,0 +1,21 @@
+/* 11 · why open source */
+
+.open { background: var(--hot); }
+.open h2 { max-width: 19ch; }
+.points { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.points div { background: var(--white); border-radius: 12px; padding: 24px 22px; }
+.points b { display: block; font-size: 20px; font-weight: 900; letter-spacing: -.03em; line-height: 1.1; margin-bottom: 10px; }
+.points p { margin: 0; font-size: 15px; line-height: 1.45; color: var(--ink-2); }
+.points .wide { grid-column: 1 / -1; background: var(--ink); color: #fff; display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 24px; align-items: baseline; }
+.points .wide b { color: var(--lime); font-size: 26px; margin: 0; }
+.points .wide p { color: #e2e2e6; font-size: 19px; line-height: 1.4; }
+
+@media (max-width: 1100px) {
+  .points { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .points .wide { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+}
+@media (max-width: 760px) {
+  .points { grid-template-columns: minmax(0, 1fr); }
+}

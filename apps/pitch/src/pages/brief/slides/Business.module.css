@@ -1,0 +1,20 @@
+/* 13 · the business */
+
+.biz { background: var(--ink); color: #fff; }
+.kicker { color: var(--lime); }
+.body { color: #c4c4c8; max-width: 62ch; }
+.tiers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.tier { background: var(--night); border-radius: 14px; padding: 26px 26px 22px; display: flex; flex-direction: column; }
+.tier:first-child { background: var(--lime); color: var(--ink); }
+.t-k { margin: 0 0 10px; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
+.tier > b { font-size: 24px; font-weight: 900; letter-spacing: -.035em; }
+.t-who { margin: 4px 0 16px; font-size: 14px; opacity: .7; }
+.tier ul { list-style: none; margin: 0 0 20px; padding: 0; flex: 1; font-size: 15px; line-height: 1.4; }
+.tier li { padding: 7px 0; border-top: 1px solid var(--night-rule); }
+.tier:first-child li { border-color: rgba(16, 16, 18, .18); }
+.t-p { margin: 0; font: 500 12px var(--mono); letter-spacing: .04em; text-transform: uppercase; }
+.cap { margin: 22px 0 0; font-size: 15px; color: #9a9aa0; max-width: 70ch; }
+
+@media (max-width: 900px) {
+  .tiers { grid-template-columns: minmax(0, 1fr); }
+}

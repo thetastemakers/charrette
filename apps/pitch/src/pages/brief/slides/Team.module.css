@@ -1,0 +1,14 @@
+/* 08 · the experience */
+
+.team { background: var(--cream); }
+.kicker { color: var(--hot-ink); }
+.split { grid-template-columns: minmax(0, .6fr) minmax(0, 1.4fr); gap: 48px; }
+.split h2 { font-size: clamp(32px, 3.3vw, 48px); margin-bottom: 28px; }
+.pts li { padding: 12px 0; font-size: 16px; border-color: rgba(16, 16, 18, .14); color: var(--ink-2); }
+.pts b { color: var(--ink); }
+.shot { margin: 0; }
+.shot figcaption { margin-top: 16px; font-size: 14px; line-height: 1.45; color: var(--ink-3); max-width: 60ch; }
+
+@media (max-width: 900px) {
+  .split { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+}
