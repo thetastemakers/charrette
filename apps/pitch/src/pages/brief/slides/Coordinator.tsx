@@ -2,10 +2,11 @@ import { useEffect, useRef, useState, type RefObject } from 'react'
 
 import { cx } from '../../../lib/cx'
 import { vars } from '../../../lib/vars'
-import { STEPS, type Step } from '../model/data'
+import { STEPS, TASK, type Step } from '../model/data'
 import { edgePath, NODE_H, NODE_W, nodeX, nodeY, parentOf, stepTitle } from '../model/geometry'
 import { pad2, stepAt } from '../model/lib'
 import { CAMERA, FACT_TOTAL, FACTS, HUB, MEMORY_FROM, MEMORY_STEPS, PEOPLE, PEOPLE_AT, RECORD_OUT, spoke, type Fact } from '../model/memory'
+import { labOf, MarkAt } from '../Mark'
 import { Pin } from '../Slide'
 import ui from '../ui.module.css'
 import s from './Coordinator.module.css'
@@ -29,6 +30,11 @@ export function Dag({ i }: { i: number }) {
         ),
       )}
       {STEPS.map((st, j) => {
+        const also = st.also === undefined ? undefined : STEPS[st.also]
+        if (!also || j > i) return null
+        return <path key={`a${j}`} className={cx(s.e, also.human && s.human, j === i && s.new)} d={edgePath(also, st)} pathLength={1} />
+      })}
+      {STEPS.map((st, j) => {
         if (j > i) return null
         const x = nodeX(st)
         const y = nodeY(st)
@@ -45,6 +51,7 @@ export function Dag({ i }: { i: number }) {
             <text className={s.nw} x={x + 14} y={y + 54}>
               {st.w}
             </text>
+            <MarkAt lab={labOf(st.w)} x={x + NODE_W - 30} y={y + 41} size={16} />
           </g>
         )
       })}
@@ -152,7 +159,7 @@ function useCamera(ref: RefObject<SVGSVGElement | null>, to: Box, ms = 900): voi
   }, [ref, to, ms])
 }
 
-function Why({ i, st }: { i: number; st: Step }) {
+function Why({ st }: { st: Step }) {
   if (st.add) {
     const reason = st.add.charAt(0).toLowerCase() + st.add.slice(1)
     return (
@@ -161,13 +168,7 @@ function Why({ i, st }: { i: number; st: Step }) {
       </span>
     )
   }
-  return (
-    <span className={s.why}>
-      {i < 4
-        ? 'The obvious next step. Nothing after it exists until its result does.'
-        : 'Back on the main line, once everything the evidence added is settled.'}
-    </span>
-  )
+  return <span className={s.why}>{st.why}</span>
 }
 
 /** The caption under the graph: the step being told. */
@@ -184,7 +185,7 @@ export function Card({ i }: { i: number }) {
       </div>
       <p className={s.fcP}>
         {st.t}
-        <Why i={i} st={st} />
+        <Why st={st} />
       </p>
     </div>
   )
@@ -329,7 +330,8 @@ export function Coordinator() {
                 <p className={cx(ui.kicker, s.kicker)}>The answer · The coordinator</p>
                 <h2>The graph isn’t drawn in advance. Each result decides the next step.</h2>
                 <p className={s.task}>
-                  <span>Task 418</span>After a user’s role changes, their old permissions keep being served.
+                  <span>Task {TASK.id}</span>
+                  {TASK.text}
                 </p>
               </div>
               <div className={cx(s.head, s.headMem)} aria-hidden="true">

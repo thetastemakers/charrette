@@ -1,5 +1,5 @@
-/* 10 · open source: the base on your desktop, what's sold on top of it, and
-   why that grows. One scene per beat where the panel pins; all three where it doesn't. */
+/* 11 · open source: the base on your desktop, what's sold on top of it, how
+   that grows and what a lead checks. One scene per beat where the panel pins; all four where it doesn't. */
 
 .open { background: var(--white); }
 .kicker { color: var(--cobalt); }
@@ -51,22 +51,26 @@
 .core { position: absolute; left: 0; top: 0; bottom: 0; width: 22px; margin: 0; border-radius: 6px; background: var(--cobalt); }
 .core span { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-90deg); white-space: nowrap; font: 500 10.5px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: #fff; }
 
-/* 3 · the loop and the lead's checklist */
-.why { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 16px; align-items: stretch; }
-.loop, .lead { padding: 20px 22px; border-radius: 12px; }
-.loop { background: var(--cream); }
-.loop ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
-.loop li { position: relative; display: flex; gap: 12px; align-items: center; padding: 9px 0; font-size: 16px; font-weight: 700; letter-spacing: -.015em; }
-.loop li span { flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--cobalt); color: #fff; font: 600 12px var(--mono); }
-.loop li + li::before { content: ''; position: absolute; left: 12px; top: -9px; width: 2px; height: 18px; background: var(--cobalt); }
-.back { margin: 10px 0 0; padding-top: 12px; border-top: 1.5px dashed var(--cobalt); font: 500 12.5px/1.45 var(--mono); color: var(--cobalt); }
+/* 3 · the loop */
+.loop { padding: 24px 26px; border-radius: 12px; background: var(--cream); }
+.loop ol { list-style: none; margin: 0; padding: 0; display: grid; }
+.loop li { position: relative; display: flex; gap: 14px; align-items: center; padding: 11px 0; font-size: 19px; font-weight: 700; letter-spacing: -.02em; }
+.loop li span { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--cobalt); color: #fff; font: 600 12.5px var(--mono); }
+.loop li + li::before { content: ''; position: absolute; left: 14px; top: -11px; width: 2px; height: 22px; background: var(--cobalt); }
+.back { margin: 12px 0 0; padding-top: 14px; border-top: 1.5px dashed var(--cobalt); font: 500 13px/1.45 var(--mono); color: var(--cobalt); }
 .back::before { content: '↺ '; font-size: 15px; }
-.lead { background: var(--ink); color: #fff; position: relative; }
-.lead .sk { color: #9a9aa0; }
-.lead ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.lead li { display: flex; gap: 10px; align-items: baseline; font-size: 16px; font-weight: 600; }
-.lead li::before { content: '✓'; flex: none; color: var(--lime); font-weight: 900; }
-.stamp { display: inline-block; margin: 18px 0 0; padding: 6px 12px; border-radius: 4px; background: var(--lime); color: var(--ink); font: 700 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+
+/* 4 · the lead's review */
+.review { padding: 18px 22px 22px; border-radius: 12px; background: var(--ink); color: #fff; }
+.rv-h { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; padding-bottom: 12px; border-bottom: 1px solid var(--night-rule); font: 500 12px var(--mono); color: #9a9aa0; }
+.rv-h b { margin-right: 6px; color: #fff; }
+.rv { list-style: none; margin: 0; padding: 0; }
+.rv li { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; gap: 12px; align-items: start; padding: 11px 0; border-bottom: 1px solid var(--night-rule); }
+.rv b { display: block; font-size: 15.5px; font-weight: 800; letter-spacing: -.015em; }
+.rv p { margin: 2px 0 0; font-size: 14px; line-height: 1.4; color: #b4b4ba; }
+.rv code { margin-top: 1px; padding: 3px 8px; border-radius: 4px; background: var(--night-2); font: 500 11.5px/1.4 var(--mono); color: var(--cobalt-soft); white-space: nowrap; }
+.ok { color: var(--lime); font-weight: 900; line-height: 22px; }
+.stamp { display: inline-block; margin: 16px 0 0; padding: 6px 12px; border-radius: 4px; background: var(--lime); color: var(--ink); font: 700 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
 
 /* one scene at a time, where panels pin */
 @media (min-width: 901px) and (min-height: 620px) and (prefers-reduced-motion: no-preference) and (scripting: enabled) {
@@ -75,7 +79,7 @@
   .beats li:not(.on) p { display: none; }
   .fig { gap: 0; align-items: center; }
   .scene { grid-area: 1 / 1; transition: opacity 450ms, transform 550ms cubic-bezier(.2, .8, .2, 1); }
-  .grid:not([data-step='0']) .desk, .grid:not([data-step='1']) .stack, .grid:not([data-step='2']) .why { opacity: 0; transform: translateY(18px); pointer-events: none; }
+  .grid:not([data-step='0']) .desk, .grid:not([data-step='1']) .stack, .grid:not([data-step='2']) .loop, .grid:not([data-step='3']) .review { opacity: 0; transform: translateY(18px); pointer-events: none; }
   .grid[data-step='1'] .layer:not(.base) { animation: drop 550ms cubic-bezier(.2, .8, .2, 1) both; }
   .grid[data-step='1'] .ent { animation-delay: 120ms; }
 }
@@ -87,6 +91,7 @@
 @media (max-width: 760px) {
   .pane { grid-template-columns: minmax(0, 1fr); }
   .tree { border-right: 0; border-bottom: 1px solid var(--night-rule); }
-  .why { grid-template-columns: minmax(0, 1fr); }
+  .rv li { grid-template-columns: 20px minmax(0, 1fr); }
+  .rv code { grid-column: 2; justify-self: start; }
   .layer { grid-template-columns: minmax(0, 1fr); gap: 8px; }
 }

@@ -5,6 +5,8 @@
 .mig { margin: 0; background: var(--cream); border-radius: 14px; padding: 24px 28px 26px; }
 .head { display: grid; grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr); gap: 0; align-items: end; padding-bottom: 14px; margin-bottom: 14px; border-bottom: 2px solid var(--ink); }
 .head p { margin: 0; font-size: 20px; font-weight: 900; letter-spacing: -.03em; transition: opacity 400ms; }
+.name { display: flex; align-items: center; gap: 8px; }
+.name svg { width: 22px; height: 22px; }
 .head small { display: block; font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); margin-top: 2px; }
 .to { opacity: .3; padding-left: 12px; }
 .arrow { font-weight: 900; color: var(--ink); opacity: 0; transition: opacity 400ms; text-align: center; }

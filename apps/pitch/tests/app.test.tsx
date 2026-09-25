@@ -23,9 +23,10 @@ describe('static page routing', () => {
 
   it('renders the complete brief before JavaScript runs', () => {
     const html = renderToString(<App pathname="/" />)
-    expect(html.match(/data-slide=""/g)).toHaveLength(13)
-    expect(html).toContain('Agents come and go. The project stays.')
-    expect(html).toContain('Seven interruptions. One needed you.')
+    expect(html.match(/data-slide=""/g)).toHaveLength(14)
+    expect(html).toMatch(/Agents come and go\. <span[^>]*>The project stays\.<\/span><\/h1>/)
+    expect(html).toContain('The developer is the message bus.')
+    expect(html).toContain('The best model now changes every few weeks.')
     expect(html).toContain('Task 418, step by step')
     expect(html).toContain('href="/research/"')
     expect(html.match(/class="skip"/g)).toHaveLength(1)
@@ -48,7 +49,7 @@ describe('static page routing', () => {
   })
 
   it('prerenders the actual output paths with content', async () => {
-    expect(await renderPage('/')).toContain('Agents come and go. The project stays.')
+    expect(await renderPage('/')).toContain('The project stays.</span></h1>')
     expect(await renderPage('/research/')).toContain('The missing project layer.')
     expect(await renderPage('/404/')).toContain('Nothing here.')
   })

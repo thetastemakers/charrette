@@ -1,4 +1,4 @@
-import { DAY, type Ping } from './data'
+import { HAND, type HandStep } from './data'
 
 export const clamp = (v: number): number => Math.max(0, Math.min(1, v))
 
@@ -20,21 +20,25 @@ export const pinProgress = (top: number, height: number, viewport: number): numb
 /** The step to show for a given progress through a panel of `n` steps. */
 export const stepAt = (p: number, n: number): number => Math.round(clamp(p) * (n - 1))
 
-export interface DayTotals {
-  /** Times you were pulled out of your work. */
-  interruptions: number
-  /** Of those, the ones that only needed a message passed on. */
-  relays: number
-  /** Minutes the agents sat finished, waiting for you to notice. */
+export interface HandTotals {
+  /** Minutes finished agents sat waiting for you to notice. */
   waiting: number
+  /** Results you carried from one agent to the next. */
+  relays: number
+  /** Steps that never ran. */
+  skipped: number
+  /** Hand-offs that lost something on the way. */
+  lossy: number
 }
 
-/** The running totals after the first `n` interruptions of the morning. */
-export function dayTotals(n: number, day: readonly Ping[] = DAY): DayTotals {
-  const seen = day.slice(0, Math.max(0, n))
+/** The running totals after the first `n` steps of the morning. */
+export function handTotals(n: number, steps: readonly HandStep[] = HAND): HandTotals {
+  const past = steps.slice(0, Math.max(0, n))
+  const ran = past.filter((e) => e.fate !== 'forgot')
   return {
-    interruptions: seen.length,
-    relays: seen.filter((e) => !e.dec).length,
-    waiting: seen.reduce((m, e) => m + e.seen - e.ping, 0),
+    waiting: ran.reduce((m, e) => m + (e.seen ?? 0) - (e.done ?? 0), 0),
+    relays: ran.length,
+    skipped: past.length - ran.length,
+    lossy: past.filter((e) => e.fate === 'lossy').length,
   }
 }

@@ -31,4 +31,6 @@ Publish `apps/pitch/dist/` to a static host. Route unknown URLs to `404.html`. T
 | `SITE_NOINDEX=1` | Keeps a preview deployment out of search results. |
 | `BASE_PATH` | Serves the site below a path such as `/pitch/`. |
 
-`public/_headers` provides security and cache headers on Netlify and Cloudflare Pages. Configure equivalent headers on other hosts. Use HTTPS when deploying with the supplied HSTS and CSP headers.
+On Cloudflare, `wrangler.jsonc` serves `dist/` as static assets with the 404 page; build with `bun run build`, deploy with `npx wrangler deploy`, and set `SITE_URL` as a build variable.
+
+`public/_headers` provides security and cache headers on Netlify and Cloudflare. Configure equivalent headers on other hosts. Use HTTPS when deploying with the supplied HSTS and CSP headers.

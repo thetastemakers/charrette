@@ -16,6 +16,38 @@
 .shot figcaption b { font-size: clamp(20px, 2vw, 28px); line-height: 1.15; letter-spacing: -.035em; font-weight: 800; }
 .cue { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); margin: 0; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); opacity: calc(1 - var(--p, 0) * 4); }
 
+/* the headline: a reel of lab marks beside "Agents", each one coming and going */
+.h1 { max-width: 11ch; font-size: clamp(50px, 8.2vw, 120px); }
+.win { display: inline-block; width: .82em; height: .9em; margin-right: .1em; overflow: hidden; vertical-align: -.1em; }
+.strip { display: block; animation: reel 15.3s infinite; }
+.item { display: grid; place-items: center; height: .9em; }
+.item > svg { width: .78em; height: .78em; }
+.stays { display: block; color: var(--cobalt); }
+@keyframes reel {
+  0% { transform: translateY(0); }
+  8.82% { transform: translateY(0%); animation-timing-function: cubic-bezier(.6, 0, .3, 1.35); }
+  11.11% { transform: translateY(-10%); }
+  19.93% { transform: translateY(-10%); animation-timing-function: cubic-bezier(.6, 0, .3, 1.35); }
+  22.22% { transform: translateY(-20%); }
+  31.05% { transform: translateY(-20%); animation-timing-function: cubic-bezier(.6, 0, .3, 1.35); }
+  33.33% { transform: translateY(-30%); }
+  42.16% { transform: translateY(-30%); animation-timing-function: cubic-bezier(.6, 0, .3, 1.35); }
+  44.44% { transform: translateY(-40%); }
+  53.27% { transform: translateY(-40%); animation-timing-function: cubic-bezier(.6, 0, .3, 1.35); }
+  55.56% { transform: translateY(-50%); }
+  64.38% { transform: translateY(-50%); animation-timing-function: cubic-bezier(.6, 0, .3, 1.35); }
+  66.67% { transform: translateY(-60%); }
+  75.49% { transform: translateY(-60%); animation-timing-function: cubic-bezier(.6, 0, .3, 1.35); }
+  77.78% { transform: translateY(-70%); }
+  86.60% { transform: translateY(-70%); animation-timing-function: cubic-bezier(.6, 0, .3, 1.35); }
+  88.89% { transform: translateY(-80%); }
+  97.71% { transform: translateY(-80%); animation-timing-function: cubic-bezier(.6, 0, .3, 1.35); }
+  100.00% { transform: translateY(-90%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .strip { animation: none; }
+}
+
 @media (min-width: 901px) and (min-height: 620px) and (prefers-reduced-motion: no-preference) and (scripting: enabled) {
   section.hero { height: calc(var(--steps) * 100vh + 70vh); }
   .stick { overflow: hidden; padding: 0; }

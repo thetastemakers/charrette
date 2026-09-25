@@ -54,31 +54,32 @@ export function Ladder() {
           </li>
           <li className={s.us} style={vars({ '--h': 300 })}>
             <div className={s.tread}>
-              <svg viewBox="0 0 280 110" aria-hidden="true">
-                <rect className={s.gm} x="4" y="92" width="272" height="14" rx="3" />
-                <rect className={s.gb} x="4" y="12" width="44" height="24" rx="4" />
-                <rect className={s.gb} x="70" y="12" width="44" height="24" rx="4" />
-                <rect className={s.gb} x="136" y="12" width="44" height="24" rx="4" />
-                <rect className={s.gb} x="232" y="12" width="44" height="24" rx="4" />
-                <path className={s.gl} d="M48 24 H70 M114 24 H136 M180 24 H232" />
-                <rect className={s.ga} x="136" y="52" width="44" height="24" rx="4" />
-                <path className={s.gad} d="M158 36 V52" />
-                <circle className={s.gy} cx="210" cy="64" r="11" />
-                <path className={s.gh} d="M180 64 H199 M210 53 V36 H232" />
-                <path className={s.gad} d="M254 36 V92" />
+              <svg viewBox="0 0 360 170" aria-hidden="true">
+                <rect className={s.gm} x="0" y="144" width="360" height="22" rx="4" />
+                <text className={s.gt} x="12" y="159">
+                  project memory
+                </text>
+                <path className={s.gad} d="M26 144 V48 M334 44 V144" />
+                <rect className={s.gb} x="0" y="18" width="52" height="26" rx="5" />
+                <rect className={s.gb} x="76" y="18" width="52" height="26" rx="5" />
+                <rect className={s.gb} x="152" y="18" width="52" height="26" rx="5" />
+                <rect className={s.gb} x="308" y="18" width="52" height="26" rx="5" />
+                <path className={s.gl} d="M52 31 H76 M128 31 H152 M204 31 H308" />
+                <rect className={s.ga} x="152" y="72" width="52" height="26" rx="5" />
+                <path className={s.gad} d="M178 44 V72" />
+                <path className={s.gh} d="M204 85 H252 M263 74 V31" />
+                <circle className={s.gy} cx="263" cy="85" r="11" />
               </svg>
             </div>{' '}
             <b>Supervision from evidence</b>
             <p>
-              Each result decides the next step: a finding adds a repair, a sensitive file adds an audit. Work is routed across labs, a
-              person is asked only when it matters, and what was learned goes into memory the next task inherits.
+              Each result decides the next step: a finding adds a repair, a sensitive file adds an audit. You’re asked only when it matters.
             </p>
             <span className={s.rW}>Charrette</span>
           </li>
         </ol>
         <p className={s.cap}>
-          The agent vendors sell steps 1 to 3. Step 4 is one thing, not two features: the graph, the routing, the person and the memory only
-          work together.
+          The vendors sell steps 1 to 3. Step 4 only works as one thing: the graph, the routing, the person and the memory.
         </p>
       </div>
     </Slide>

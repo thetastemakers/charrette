@@ -11,6 +11,7 @@ import { Coordinator } from './slides/Coordinator'
 import { Hero } from './slides/Hero'
 import { Ladder } from './slides/Ladder'
 import { Market } from './slides/Market'
+import { Models } from './slides/Models'
 import { Morning } from './slides/Morning'
 import { Open } from './slides/Open'
 import { Plan } from './slides/Plan'
@@ -19,9 +20,9 @@ import { Team } from './slides/Team'
 import ui from './ui.module.css'
 
 /** Keep in step with the slides below: the counter reads it on first paint. */
-const SLIDE_COUNT = 13
+const SLIDE_COUNT = 14
 
-/** The investor brief: thirteen full-screen panels, some of them pinned while their figure plays. */
+/** The investor brief: fourteen full-screen panels, some of them pinned while their figure plays. */
 export function Brief() {
   useMeta(BRIEF)
   const deck = useRef<HTMLDivElement>(null)
@@ -37,6 +38,7 @@ export function Brief() {
         <Ladder />
         <Team />
         <Arch />
+        <Models />
         <Market />
         <Open />
         <Business />

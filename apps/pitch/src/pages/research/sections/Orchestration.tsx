@@ -181,31 +181,31 @@ export function Orchestration() {
         </figure>
         <figure className={s.ex}>
           <figcaption className={s.exH}>
-            <b>Figure 6</b> Task 418, as it ran: a session-refresh bug in the design prototype’s example project
+            <b>Figure 6</b> Task 418, as it ran: stale permissions after a role change, in the design prototype’s example project
           </figcaption>
           <div className={s.dagWrap} tabIndex={0} role="region" aria-label="Diagram, scrolls sideways on small screens">
             <svg
               className={s.dag}
-              viewBox="0 0 1128 334"
+              viewBox="0 0 1288 334"
               role="img"
-              aria-label="The graph task 418 grew: ten steps, four of them added from evidence, one question for a person."
+              aria-label="The graph task 418 grew: nine steps, four of them added from evidence, one question for a person."
             >
-              <path className={s.e} d="M148 53 C160 53, 160 53, 172 53" />
-              <path className={s.e} d="M308 53 C320 53, 320 53, 332 53" />
-              <path className={s.e} d="M468 53 C480 53, 480 53, 492 53" />
-              <path className={cx(s.e, s.app)} d="M560 92 L560 126" />
-              <path className={cx(s.e, s.app)} d="M628 165 C640 165, 640 165, 652 165" />
-              <path className={cx(s.e, s.app)} d="M720 204 L720 238" />
-              <path className={cx(s.e, s.app, s.human)} d="M788 277 C800 277, 800 277, 812 277" />
-              <path className={s.e} d="M880 238 L880 92" />
-              <path className={s.e} d="M948 53 C960 53, 960 53, 972 53" />
+              <path className={s.e} d="M148 53 L172 53" />
+              <path className={cx(s.e, s.app)} d="M308 53 C332 53, 308 165, 332 165" />
+              <path className={cx(s.e, s.app, s.human)} d="M468 165 C492 165, 468 277, 492 277" />
+              <path className={s.e} d="M468 165 C492 165, 468 53, 492 53" />
+              <path className={cx(s.e, s.app)} d="M628 53 C652 53, 628 165, 652 165" />
+              <path className={cx(s.e, s.app, s.human)} d="M628 277 C652 277, 628 165, 652 165" />
+              <path className={cx(s.e, s.app)} d="M788 165 L812 165" />
+              <path className={cx(s.e, s.app)} d="M948 165 C972 165, 948 53, 972 53" />
+              <path className={s.e} d="M1108 53 L1132 53" />
               <g className={cx(s.n, s.coord)}>
                 <rect x="12" y="14" width="136" height="78" rx="5" />
                 <text className={s.nn} x="24" y="35">
                   01
                 </text>
                 <text className={s.nk} x="24" y="59">
-                  Brief
+                  Triage
                 </text>
                 <text className={s.nw} x="24" y="78">
                   Coordinator
@@ -217,28 +217,40 @@ export function Orchestration() {
                   02
                 </text>
                 <text className={s.nk} x="184" y="59">
-                  Reproduce
-                </text>
-                <text className={s.nw} x="184" y="78">
-                  Codex · OpenAI
-                </text>
-              </g>
-              <g className={s.n}>
-                <rect x="332" y="14" width="136" height="78" rx="5" />
-                <text className={s.nn} x="344" y="35">
-                  03
-                </text>
-                <text className={s.nk} x="344" y="59">
                   Implement
                 </text>
-                <text className={s.nw} x="344" y="78">
+                <text className={s.nw} x="184" y="78">
                   Claude Code
+                </text>
+              </g>
+              <g className={cx(s.n, s.app)}>
+                <rect x="332" y="126" width="136" height="78" rx="5" />
+                <text className={s.nn} x="344" y="147">
+                  03
+                </text>
+                <text className={s.nk} x="344" y="171">
+                  Security
+                </text>
+                <text className={s.nw} x="344" y="190">
+                  Self-hosted
+                </text>
+              </g>
+              <g className={cx(s.n, s.app, s.human)}>
+                <rect x="492" y="238" width="136" height="78" rx="5" />
+                <text className={s.nn} x="504" y="259">
+                  04
+                </text>
+                <text className={s.nk} x="504" y="283">
+                  Decide
+                </text>
+                <text className={s.nw} x="504" y="302">
+                  You
                 </text>
               </g>
               <g className={s.n}>
                 <rect x="492" y="14" width="136" height="78" rx="5" />
                 <text className={s.nn} x="504" y="35">
-                  04
+                  05
                 </text>
                 <text className={s.nk} x="504" y="59">
                   Review
@@ -248,74 +260,50 @@ export function Orchestration() {
                 </text>
               </g>
               <g className={cx(s.n, s.app)}>
-                <rect x="492" y="126" width="136" height="78" rx="5" />
-                <text className={s.nn} x="504" y="147">
-                  05
-                </text>
-                <text className={s.nk} x="504" y="171">
-                  Repair
-                </text>
-                <text className={s.nw} x="504" y="190">
-                  Claude Code
-                </text>
-              </g>
-              <g className={cx(s.n, s.app)}>
                 <rect x="652" y="126" width="136" height="78" rx="5" />
                 <text className={s.nn} x="664" y="147">
                   06
                 </text>
                 <text className={s.nk} x="664" y="171">
-                  Re-review
+                  Repair
                 </text>
                 <text className={s.nw} x="664" y="190">
+                  Claude Code
+                </text>
+              </g>
+              <g className={cx(s.n, s.app)}>
+                <rect x="812" y="126" width="136" height="78" rx="5" />
+                <text className={s.nn} x="824" y="147">
+                  07
+                </text>
+                <text className={s.nk} x="824" y="171">
+                  Re-review
+                </text>
+                <text className={s.nw} x="824" y="190">
                   Codex · OpenAI
                 </text>
               </g>
               <g className={cx(s.n, s.app)}>
-                <rect x="652" y="238" width="136" height="78" rx="5" />
-                <text className={s.nn} x="664" y="259">
-                  07
-                </text>
-                <text className={s.nk} x="664" y="283">
-                  Security
-                </text>
-                <text className={s.nw} x="664" y="302">
-                  Self-hosted
-                </text>
-              </g>
-              <g className={cx(s.n, s.app, s.human)}>
-                <rect x="812" y="238" width="136" height="78" rx="5" />
-                <text className={s.nn} x="824" y="259">
-                  08
-                </text>
-                <text className={s.nk} x="824" y="283">
-                  Decide
-                </text>
-                <text className={s.nw} x="824" y="302">
-                  You
-                </text>
-              </g>
-              <g className={cx(s.n, s.coord)}>
-                <rect x="812" y="14" width="136" height="78" rx="5" />
-                <text className={s.nn} x="824" y="35">
-                  09
-                </text>
-                <text className={s.nk} x="824" y="59">
-                  Verify
-                </text>
-                <text className={s.nw} x="824" y="78">
-                  Coordinator
-                </text>
-              </g>
-              <g className={cx(s.n, s.coord)}>
                 <rect x="972" y="14" width="136" height="78" rx="5" />
                 <text className={s.nn} x="984" y="35">
-                  10
+                  08
                 </text>
                 <text className={s.nk} x="984" y="59">
-                  Record
+                  Acceptance
                 </text>
                 <text className={s.nw} x="984" y="78">
+                  Gemini CLI
+                </text>
+              </g>
+              <g className={cx(s.n, s.coord)}>
+                <rect x="1132" y="14" width="136" height="78" rx="5" />
+                <text className={s.nn} x="1144" y="35">
+                  09
+                </text>
+                <text className={s.nk} x="1144" y="59">
+                  Record
+                </text>
+                <text className={s.nw} x="1144" y="78">
                   Coordinator
                 </text>
               </g>
@@ -349,52 +337,20 @@ export function Orchestration() {
               <tbody>
                 <tr>
                   <td>01</td>
-                  <td>Brief</td>
+                  <td>Triage</td>
                   <td>Coordinator</td>
-                  <td>Every task starts from project memory. Six claims were in scope; two disagreed about the session window.</td>
-                  <td>A brief with both claims attached, marked as disputed</td>
+                  <td>Every task starts from project memory. Six facts were in scope; two disagreed about the refresh window.</td>
+                  <td>Three acceptance criteria, a failing test, and both disputed facts, marked as such</td>
                 </tr>
                 <tr>
                   <td>02</td>
-                  <td>Reproduce</td>
-                  <td>Codex · OpenAI</td>
-                  <td>A repair starts from a failing test. Routed to the cheapest capable agent on the team’s plans.</td>
-                  <td>One failing test</td>
-                </tr>
-                <tr>
-                  <td>03</td>
                   <td>Implement</td>
                   <td>Claude Code · Anthropic</td>
-                  <td>Best recent record on this module. Received the brief and the test, not a summary.</td>
+                  <td>Best record on this module’s last five tasks. Received the criteria and the test, not a summary.</td>
                   <td>A diff against a named revision</td>
                 </tr>
-                <tr>
-                  <td>04</td>
-                  <td>Review</td>
-                  <td>Codex · OpenAI</td>
-                  <td>Project policy: session code is reviewed by a model family other than the author’s.</td>
-                  <td>Finding: three more call sites with the same bug</td>
-                </tr>
                 <tr className={s.isApp}>
-                  <td>05</td>
-                  <td>Repair</td>
-                  <td>Claude Code · Anthropic</td>
-                  <td>
-                    <b>Added.</b> The review found three more call sites.
-                  </td>
-                  <td>A second diff, linked to the finding</td>
-                </tr>
-                <tr className={s.isApp}>
-                  <td>06</td>
-                  <td>Re-review</td>
-                  <td>Codex · OpenAI</td>
-                  <td>
-                    <b>Added.</b> Every repair is re-reviewed against the finding it answers.
-                  </td>
-                  <td>Clean review of the repair</td>
-                </tr>
-                <tr className={s.isApp}>
-                  <td>07</td>
+                  <td>03</td>
                   <td>Security audit</td>
                   <td>Open-weight, self-hosted</td>
                   <td>
@@ -404,7 +360,7 @@ export function Orchestration() {
                   <td>One finding it could not settle: a failed rotation now fails the request</td>
                 </tr>
                 <tr className={s.isYou}>
-                  <td>08</td>
+                  <td>04</td>
                   <td>Decide</td>
                   <td>A person</td>
                   <td>
@@ -413,27 +369,55 @@ export function Orchestration() {
                   <td>A decision: retry once, then fail</td>
                 </tr>
                 <tr>
-                  <td>09</td>
-                  <td>Verify</td>
-                  <td>Coordinator</td>
-                  <td>Completion requires evidence, not the agents’ reports.</td>
-                  <td>412 tests passing; the original failing test passing against staging</td>
+                  <td>05</td>
+                  <td>Review</td>
+                  <td>Codex · OpenAI</td>
+                  <td>Project policy: session code is reviewed by a lab other than the author’s.</td>
+                  <td>Finding: three more call sites with the same bug</td>
+                </tr>
+                <tr className={s.isApp}>
+                  <td>06</td>
+                  <td>Repair</td>
+                  <td>Claude Code · Anthropic</td>
+                  <td>
+                    <b>Added.</b> The review found three more call sites.
+                  </td>
+                  <td>A second diff, with the decision applied</td>
+                </tr>
+                <tr className={s.isApp}>
+                  <td>07</td>
+                  <td>Re-review</td>
+                  <td>Codex · OpenAI</td>
+                  <td>
+                    <b>Added.</b> Every repair is re-reviewed against the findings it answers.
+                  </td>
+                  <td>Clean review of the repair</td>
+                </tr>
+                <tr className={s.isApp}>
+                  <td>08</td>
+                  <td>Acceptance test</td>
+                  <td>Gemini CLI · Google</td>
+                  <td>
+                    <b>Added.</b> The change is user-facing, so the criteria from triage are tested end to end, by an agent that never saw
+                    the code.
+                  </td>
+                  <td>All three criteria passing on staging; 412 tests passing</td>
                 </tr>
                 <tr>
-                  <td>10</td>
+                  <td>09</td>
                   <td>Record</td>
                   <td>Coordinator</td>
                   <td>The run ends by writing to the project.</td>
-                  <td>A proposed convention, the decision, and the refresh-window dispute, still open</td>
+                  <td>A new convention, the decision, and the refresh-window dispute, still open</td>
                 </tr>
               </tbody>
             </table>
           </div>
           <p className={s.exCap}>
             This is an illustrative run built on the design prototype’s example data, not a production trace. What it shows is the shape:
-            four of the ten steps did not exist when the task started, three model families took part, and the developer was asked one
-            question, at the one point where the answer changes what users see. Without a coordinator, each of the nine transitions is a
-            hand-off the developer carries.
+            four of the nine steps did not exist when the task started, four model families took part, and the developer was asked one
+            question, at the one point where the answer changes what users see. Without a coordinator, each of the nine hand-offs is one the
+            developer carries, and each added step is one they have to remember.
           </p>
         </figure>
         <div className={s.prose}>

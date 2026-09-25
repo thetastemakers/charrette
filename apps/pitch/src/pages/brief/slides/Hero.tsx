@@ -6,10 +6,32 @@ import board1440webp from '../../../assets/img/board-1440.webp'
 import board720avif from '../../../assets/img/board-720.avif'
 import board720webp from '../../../assets/img/board-720.webp'
 import { cx } from '../../../lib/cx'
+import { type Lab, Mark } from '../Mark'
 import { clamp } from '../model/lib'
 import { Pin } from '../Slide'
 import ui from '../ui.module.css'
 import s from './Hero.module.css'
+
+/** The reel beside the headline: labs whose agents come and go, the first repeated so the loop closes. */
+const REEL: readonly Lab[] = ['anthropic', 'openai', 'google', 'deepseek', 'moonshot', 'qwen', 'cursor', 'minimax', 'xiaomi']
+
+/** One lab's mark after another beside "Agents", like a slot machine. The words stay plain text. */
+function Headline() {
+  return (
+    <h1 className={s.h1}>
+      <span className={s.win} aria-hidden="true">
+        <span className={s.strip}>
+          {[...REEL, REEL[0]!].map((l, j) => (
+            <span key={j} className={s.item}>
+              <Mark lab={l} />
+            </span>
+          ))}
+        </span>
+      </span>
+      Agents come and go. <span className={s.stays}>The project stays.</span>
+    </h1>
+  )
+}
 
 const SIZES = '(min-width: 1200px) 1180px, calc(100vw - 32px)'
 
@@ -34,7 +56,7 @@ export function Hero() {
         <>
           <div className={cx(ui.wrap, s.copy)}>
             <p className={cx(ui.kicker, s.kicker)}>Open-source infrastructure for software engineering with AI agents</p>
-            <h1>Agents come and go. The project stays.</h1>
+            <Headline />
             <div className={s.row}>
               <p className={s.dek}>
                 Charrette gives a software project <b>a memory it owns</b> and <b>a coordinator that moves the work</b> between AI agents.

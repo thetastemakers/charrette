@@ -1,4 +1,4 @@
-/* 15 · close: the name sits on the floor of the page */
+/* 14 · close: the name sits on the floor of the page */
 
 .closer { background: var(--lime); overflow: hidden; align-items: flex-start; padding-bottom: 0; }
 .wrap { padding-bottom: calc((100vw - 32px) / 4.36 * .73 + 40px); }

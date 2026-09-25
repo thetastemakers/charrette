@@ -59,7 +59,7 @@ export function Arch() {
         <div className={s.plug} aria-hidden="true">
           <i />
           <span>
-            Next task briefed from 6 facts · running on <b>{AGENTS[on]}</b>
+            Next task triaged from 6 facts · running on <b>{AGENTS[on]}</b>
           </span>
           <i />
         </div>

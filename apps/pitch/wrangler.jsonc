@@ -1,0 +1,12 @@
+// Cloudflare Workers static assets: serves the prerendered dist/ as is, with no Worker script.
+// Committed so `wrangler deploy` uses it instead of trying to auto-configure the workspace.
+{
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "charrette-pitch",
+  "compatibility_date": "2026-09-25",
+  "assets": {
+    "directory": "./dist",
+    // Unknown URLs get the prerendered 404 document with a 404 status.
+    "not_found_handling": "404-page",
+  },
+}

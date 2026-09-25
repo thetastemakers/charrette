@@ -13,14 +13,16 @@ const SY = 100
 export const nodeX = (s: Step): number => s.c * SX
 export const nodeY = (s: Step): number => s.r * SY
 
+const COLS = Math.max(...STEPS.map((s) => s.c))
+const ROWS = Math.max(...STEPS.map((s) => s.r))
 /** The graph's drawing area, with a little room for strokes. */
-export const DAG_VIEWBOX = `-2 -2 ${6 * SX + NODE_W + 4} ${2 * SY + NODE_H + 4}`
+export const DAG_BOX = [-24, -24, COLS * SX + NODE_W + 48, ROWS * SY + NODE_H + 48] as const
 
 /** The step a step grows from: the one named in `from`, or the one before. */
 export const parentOf = (s: Step, j: number): Step => STEPS[s.from ?? j - 1]!
 
 /** The display title of a step. */
-export const stepTitle = (s: Step): string => (s.k === 'Security' ? 'Security audit' : s.k)
+export const stepTitle = (s: Step): string => s.title ?? s.k
 
 /** The connector from `a` to `b`: straight within a column, a soft S between columns. */
 export function edgePath(a: Step, b: Step): string {

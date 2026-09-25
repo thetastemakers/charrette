@@ -22,6 +22,7 @@ interface Row {
 const ROWS: readonly Row[] = [
   {
     name: 'GitHub Copilot',
+    note: 'Microsoft, OpenAI’s largest backer',
     agents: ['part', 'Copilot, Claude and Codex, inside GitHub'],
     models: ['part', '20+ from five labs, GitHub’s pick'],
     automation: ['lock', 'Agentic Workflows, in preview: an event starts one agent'],
@@ -108,8 +109,8 @@ export function Market() {
         <div className={s.head}>
           <h2>Everyone is building this layer, inside their own product.</h2>
           <p className={cx(ui.body, s.body)}>
-            Agents are interchangeable and the best model changes hands every few months. What lasts is what a project knows and how its
-            work moves, so every vendor wants to own that. It validates the category, and it is why none of them will make it portable.
+            Agents are interchangeable and the best model changes hands every few weeks. What lasts is what a project knows and how its work
+            moves, so every vendor wants to own that. It validates the category, and it is why none of them will make it portable.
           </p>
         </div>
         <div className={s.tblWrap} tabIndex={0} role="region" aria-label="How the products compare. Scrolls sideways on small screens">

@@ -3,7 +3,7 @@
    task's Record step writes into it, the rest of the project's knowledge
    fills in, then the people who share it. Illustrative, like the task. */
 
-import { NODE_H, NODE_W, nodeX, nodeY } from './geometry'
+import { DAG_BOX, NODE_H, NODE_W, nodeX, nodeY } from './geometry'
 import { STEPS } from './data'
 
 export type FactStatus = 'settled' | 'seen' | 'proposed' | 'retired'
@@ -131,7 +131,7 @@ export const PEOPLE_AT = step + 2
 
 /** The camera over the coordinator panel: the task graph alone, then panned so the graph's end leads into memory. */
 export const CAMERA = {
-  task: [-2, -2, 1132, 276],
+  task: DAG_BOX,
   memory: [RECORD_OUT.x - 340, HUB.y - 250, HUB.x + 650 - (RECORD_OUT.x - 340), 500],
 } as const satisfies Record<string, readonly [number, number, number, number]>
 

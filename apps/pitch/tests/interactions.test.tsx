@@ -98,17 +98,17 @@ describe('client behavior', () => {
     expect(document.querySelectorAll('#flow [data-node]')).toHaveLength(1)
     expect(stage()?.getAttribute('data-phase')).toBe('task')
 
-    // 13 steps over 2,100px of scroll: step 9 is the Record step, the whole task graph
-    flowTop = -1_575
+    // 12 steps over 2,100px of scroll: step 8 is the Record step, the whole task graph
+    flowTop = -1_527
     act(() => {
       fireEvent.scroll(window)
     })
-    expect(document.querySelectorAll('#flow [data-node]')).toHaveLength(10)
+    expect(document.querySelectorAll('#flow [data-node]')).toHaveLength(9)
     expect(document.querySelectorAll('#flow [data-fact]')).toHaveLength(0)
     expect(stage()?.getAttribute('data-phase')).toBe('task')
 
     // one more step and the camera pans onto the project's memory
-    flowTop = -1_750
+    flowTop = -1_718
     act(() => {
       fireEvent.scroll(window)
     })
@@ -122,7 +122,7 @@ describe('client behavior', () => {
     })
     expect(document.querySelectorAll('#flow [data-fact]')).toHaveLength(FACTS.length)
     expect(document.querySelector('#flow')?.textContent).toContain('Shared by the team')
-    expect(screen.getByRole('list', { name: 'Task 418, step by step' }).querySelectorAll('li')).toHaveLength(10)
+    expect(screen.getByRole('list', { name: 'Task 418, step by step' }).querySelectorAll('li')).toHaveLength(9)
   })
 
   it('darkens the hero into the next panel after its last step', () => {
@@ -183,25 +183,25 @@ describe('client behavior', () => {
   it('keeps the final graph visible when pinning is disabled', () => {
     setMedia(PIN_QUERY, false)
     render(<App pathname="/" />)
-    expect(document.querySelectorAll('#flow [data-node]')).toHaveLength(10)
+    expect(document.querySelectorAll('#flow [data-node]')).toHaveLength(9)
     expect(document.querySelector('#flow [data-phase]')?.getAttribute('data-phase')).toBe('task')
     expect(screen.getByRole('heading', { name: 'Every task leaves the project knowing more.' })).toBeTruthy()
-    expect(document.querySelector('#bus')?.textContent).toContain('Seven interruptions. One needed you.')
+    expect(document.querySelector('#bus')?.textContent).toContain('Merged at 11:40.')
   })
 
   it('stops rotating agents when reduced motion is requested', () => {
     vi.useFakeTimers()
     render(<Arch />)
-    expect(screen.getByText(/Next task briefed from 6 facts/).textContent).toContain('Claude Code')
+    expect(screen.getByText(/Next task triaged from 6 facts/).textContent).toContain('Claude Code')
     act(() => {
       vi.advanceTimersByTime(2_200)
     })
-    expect(screen.getByText(/Next task briefed from 6 facts/).textContent).toContain('Codex')
+    expect(screen.getByText(/Next task triaged from 6 facts/).textContent).toContain('Codex')
     act(() => setMedia('(prefers-reduced-motion: reduce)', true))
     act(() => {
       vi.advanceTimersByTime(4_400)
     })
-    expect(screen.getByText(/Next task briefed from 6 facts/).textContent).toContain('Codex')
+    expect(screen.getByText(/Next task triaged from 6 facts/).textContent).toContain('Codex')
   })
 
   it('shares and removes the brief scroll listener', () => {

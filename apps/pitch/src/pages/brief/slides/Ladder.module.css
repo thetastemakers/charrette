@@ -22,7 +22,8 @@
 .gm { fill: var(--ink); }
 /* Charrette's step: the same drawing language, in Charrette's colour */
 .stairs li.us .tread { background: var(--cobalt); border-bottom-color: var(--cobalt); }
-.stairs li.us .tread svg { max-width: 300px; }
+.stairs li.us .tread svg { max-width: none; }
+.gt { font: 600 11px var(--mono); letter-spacing: .06em; fill: var(--ink); }
 .stairs li.us .gb { fill: var(--cobalt); stroke: #fff; }
 .stairs li.us .gl, .stairs li.us .gh { stroke: #fff; }
 .stairs li.us .ga { fill: var(--cobalt); stroke: var(--lime); }

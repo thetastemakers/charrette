@@ -1,4 +1,5 @@
 import { cx } from '../../../lib/cx'
+import { Mark } from '../Mark'
 import { Pin } from '../Slide'
 import ui from '../ui.module.css'
 import s from './Problem.module.css'
@@ -10,7 +11,7 @@ const PLACES: readonly [string, Kind, boolean][] = [
   ['AGENTS.md', 'file', true],
   ['A chat from March', 'text', false],
   ['.cursor/rules', 'file', false],
-  ['PR #412 review thread', 'text', false],
+  ['PR #1147 review thread', 'text', false],
   ['What Priya remembers', 'mind', false],
   ['docs/architecture.md', 'file', true],
   ['A compacted chat summary', 'text', false],
@@ -37,13 +38,21 @@ export function Problem() {
           <figure className={s.mig} data-step={step} aria-label="Switching from Claude Code to Codex, and what comes along">
             <div className={s.head}>
               <p>
-                Claude Code<small>six months of work</small>
+                <span className={s.name}>
+                  <Mark lab="anthropic" />
+                  Claude Code
+                </span>
+                <small>six months of work</small>
               </p>
               <span className={s.arrow} aria-hidden="true">
                 →
               </span>
               <p className={s.to}>
-                Codex<small>day one</small>
+                <span className={s.name}>
+                  <Mark lab="openai" />
+                  Codex
+                </span>
+                <small>day one</small>
               </p>
             </div>
             <ul className={s.list}>

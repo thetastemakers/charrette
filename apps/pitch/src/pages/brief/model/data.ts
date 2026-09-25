@@ -1,10 +1,19 @@
-/* The two stories the brief tells with data. Both are illustrative: one task in
-   the prototype's project, and one plausible morning without Charrette. */
+/* The one task the brief follows, told twice: run by hand one morning, then run
+   by the coordinator. Illustrative, like the prototype's project it lives in. */
+
+/** Task 418, as the ticket names it. */
+export const TASK = {
+  id: 418,
+  title: 'Stale permissions after a role change',
+  text: 'After a user’s role changes, their old permissions keep being served until the session token refreshes.',
+} as const
 
 /** One step of task 418's execution graph, in the order the coordinator adds them. */
 export interface Step {
   /** Short name on the graph node. */
   k: string
+  /** Full name in captions, when it differs from the node's. */
+  title?: string
   /** Who runs it, as shown on the node. */
   w: string
   /** Who runs it, and how they're paid for, as shown in the caption. */
@@ -14,11 +23,13 @@ export interface Step {
   r: number
   /** Index of the step this one depends on. Defaults to the one before. */
   from?: number
+  /** A second step this one waits for. */
+  also?: number
   /** Why the step was added, when the plan didn't have it. */
   add?: string
   tag?: string
-  /** Model family, for runs that call a model. */
-  fam?: string
+  /** Why a planned step is where it is. */
+  why?: string
   coord?: boolean
   human?: boolean
   t: string
@@ -26,214 +37,181 @@ export interface Step {
 
 export const STEPS: readonly Step[] = [
   {
-    k: 'Brief',
+    k: 'Triage',
     w: 'Coordinator',
     full: 'Coordinator · your choice of model',
     c: 0,
     r: 0,
     coord: true,
-    t: 'The task starts from project memory, not a blank prompt. Six claims apply. Two of them disagree about the session window, so both are supplied and marked as disputed.',
-  },
-  {
-    k: 'Reproduce',
-    w: 'Codex · OpenAI',
-    full: 'Codex CLI · paid by your ChatGPT plan',
-    c: 1,
-    r: 0,
-    fam: 'OpenAI',
-    t: 'A repair starts from a failing test. Test-writing goes to whichever agent is cheapest for it on your plans this month.',
+    why: 'Every task starts here.',
+    t: 'It starts from project memory, not a blank prompt. It reproduces the bug, writes three acceptance criteria and attaches the six facts that apply. Two of them disagree about the refresh window, so both go along, marked disputed.',
   },
   {
     k: 'Implement',
     w: 'Claude Code',
     full: 'Claude Code · paid by your Claude plan',
-    c: 2,
+    c: 1,
     r: 0,
-    fam: 'Anthropic',
-    t: 'Routed on evidence: this agent has the best record on this module’s last five tasks. It gets the brief and the failing test, not a summary of them.',
-  },
-  {
-    k: 'Review',
-    w: 'Codex · OpenAI',
-    full: 'Codex CLI · a different lab from the author',
-    c: 3,
-    r: 0,
-    fam: 'OpenAI',
-    t: 'Project policy: session code gets an independent review, meaning a model family other than the author’s. It finds three more call sites with the same bug.',
-  },
-  {
-    k: 'Repair',
-    w: 'Claude Code',
-    full: 'Claude Code · paid by your Claude plan',
-    c: 3,
-    r: 1,
-    from: 3,
-    add: 'Review found three more call sites with the same bug',
-    tag: '3 call sites',
-    fam: 'Anthropic',
-    t: 'The repair inherits the finding, the original intent and the project’s conventions, so it can’t fix one problem by reintroducing another.',
-  },
-  {
-    k: 'Re-review',
-    w: 'Codex · OpenAI',
-    full: 'Codex CLI · checks the repair against the finding',
-    c: 4,
-    r: 1,
-    from: 4,
-    add: 'Every repair is re-reviewed',
-    tag: 'every repair',
-    fam: 'OpenAI',
-    t: 'Checked against both the original task and the earlier finding, not treated as a fresh review. Clean.',
+    why: 'The obvious next step. Nothing after it exists until its result does.',
+    t: 'Routed on evidence: this agent has the best record on this module’s last five tasks. It gets the criteria and the failing test, not a summary of them, and fixes the bug by rotating the session token when a role changes.',
   },
   {
     k: 'Security',
+    title: 'Security audit',
     w: 'Self-hosted',
     full: 'Open-weight model · on your own GPUs',
-    c: 4,
-    r: 2,
-    from: 5,
-    add: 'The diff touched token rotation, a path project memory marks sensitive',
+    c: 2,
+    r: 1,
+    add: 'The diff touched token rotation, which project memory marks sensitive',
     tag: 'sensitive path',
-    fam: 'Open-weight',
-    t: 'Runs on your own hardware, so this code never leaves your network, and it is a third model family. One finding it can’t settle: if rotation fails, the request now fails too.',
+    t: 'Runs on your own hardware, so this code never leaves your network, and it is a third model family. One finding it can’t settle on its own: if rotation fails, the request now fails too.',
   },
   {
     k: 'Decide',
     w: 'You',
     full: 'You · one question, one tap',
-    c: 5,
+    c: 3,
     r: 2,
-    from: 6,
+    from: 2,
     add: 'A behaviour change with no recorded decision',
     tag: 'your call',
     human: true,
-    t: 'Should a failed rotation fail the request, or retry once? It changes what users see, so it goes to a person, with the proposal from project memory attached. Everything else ran without you.',
+    t: 'Fail the request, or retry the rotation once? It changes what users see, so it goes to a person, with the proposal from project memory attached. The review doesn’t wait for your answer.',
   },
   {
-    k: 'Verify',
-    w: 'Coordinator',
-    full: 'Coordinator · evidence, not self-reports',
-    c: 5,
+    k: 'Review',
+    w: 'Codex',
+    full: 'Codex · a different lab from the author',
+    c: 3,
     r: 0,
-    from: 7,
-    coord: true,
-    t: 'Done means evidence: 412 tests pass, and the original failing test passes against staging.',
+    from: 2,
+    why: 'In the plan from the start: project policy asks for it on session code.',
+    t: 'Session code gets a review from a lab other than the author’s. It finds the same stale read at three more call sites.',
+  },
+  {
+    k: 'Repair',
+    w: 'Claude Code',
+    full: 'Claude Code · paid by your Claude plan',
+    c: 4,
+    r: 1,
+    from: 4,
+    also: 3,
+    add: 'Review found the same bug at three more call sites',
+    tag: '3 call sites',
+    t: 'It gets all three findings and your answer on rotation, with the original criteria, so it can’t fix one problem by reintroducing another.',
+  },
+  {
+    k: 'Re-review',
+    w: 'Codex',
+    full: 'Codex · checks the repair against the findings',
+    c: 5,
+    r: 1,
+    add: 'Every repair is re-reviewed',
+    tag: 'every repair',
+    t: 'Checked against the three findings, not treated as a fresh review. All three call sites are fixed. Clean.',
+  },
+  {
+    k: 'Acceptance',
+    title: 'Acceptance test',
+    w: 'Gemini CLI',
+    full: 'Gemini CLI · a fresh agent that never saw the code',
+    c: 6,
+    r: 0,
+    add: 'Users will see the change, so the criteria from triage are tested end to end',
+    tag: 'user-facing',
+    t: 'The three criteria from triage, checked on staging: a demoted user loses access on their next request, other sessions are untouched, nobody is logged out. All three pass, and so do 412 tests.',
   },
   {
     k: 'Record',
     w: 'Coordinator',
     full: 'Coordinator · writes back to project memory',
-    c: 6,
+    c: 7,
     r: 0,
-    from: 8,
     coord: true,
+    why: 'Back on the main line, once everything the evidence added is settled.',
     t: 'Three entries go back to the project: a new convention, your decision, and the unresolved refresh window. The next task inherits all three, whichever agent runs it.',
   },
 ]
 
-/** One time an agent came back to you. Times are minutes after 09:00. */
-export interface Ping {
-  a: 'Claude Code' | 'Codex'
-  /** What the agent was doing, as named on its graph node. */
+/** One step of the same task, run by hand. Times are minutes after 09:00. */
+export interface HandStep {
+  /** The step, named as on the coordinator's graph. */
   k: string
-  /** What you did about it, as named on your graph node. */
-  yk: string
-  /** The agent starts working. */
-  from: number
-  /** The agent is done and waiting. */
-  ping: number
-  /** You notice, and stop your own work. */
-  seen: number
-  /** You're back at your own work. */
-  back: number
-  msg: string
+  /** The agent you ran it with. None when it never ran. */
+  a?: 'Claude Code' | 'Codex'
+  /** You start it. */
+  from?: number
+  /** It finishes, and waits. */
+  done?: number
+  /** You notice. */
+  seen?: number
+  /** What you did by hand, or why it never happened. */
   you: string
-  /** The one interruption that needed a person. */
-  dec?: boolean
+  /** Ran and passed on whole, passed on with something lost, or never ran. */
+  fate: 'ok' | 'lossy' | 'forgot'
+  /** What went missing. */
+  lost?: string
 }
 
-/** You brief the first agent at 09:00 and are back at your own work at 09:05. */
-export const DAY_START = 5
-/** The morning shown, in minutes: 09:00 to 12:30. */
-export const SPAN = 210
-
-export const DAY: readonly Ping[] = [
+/** The morning: the same seven steps, remembered and relayed by you. */
+export const HAND: readonly HandStep[] = [
   {
+    k: 'Triage',
     a: 'Claude Code',
+    from: 0,
+    done: 14,
+    seen: 22,
+    you: 'Paste the ticket in. Explain how sessions work, again.',
+    fate: 'ok',
+  },
+  {
     k: 'Implement',
-    yk: 'Relay the diff',
-    from: 5,
-    ping: 32,
-    seen: 41,
-    back: 47,
-    msg: 'Done. 4 files changed.',
-    you: 'Copy the diff to Codex and explain the task again.',
+    a: 'Claude Code',
+    from: 22,
+    done: 49,
+    seen: 64,
+    you: 'Open Codex. Paste the diff. Explain the ticket, again.',
+    fate: 'ok',
   },
   {
-    a: 'Codex',
+    k: 'Security audit',
+    you: 'Nobody remembered that token rotation is a sensitive path.',
+    fate: 'forgot',
+  },
+  {
     k: 'Review',
-    yk: 'Relay findings',
-    from: 47,
-    ping: 62,
-    seen: 65,
-    back: 71,
-    msg: 'Same bug at 3 more call sites.',
-    you: 'Paste the findings back into Claude Code.',
-  },
-  {
-    a: 'Claude Code',
-    k: 'Repair',
-    yk: 'Say yes',
-    from: 71,
-    ping: 89,
-    seen: 104,
-    back: 109,
-    msg: 'Fixed all four. Shall I run the tests?',
-    you: 'Yes.',
-  },
-  {
-    a: 'Claude Code',
-    k: 'Run tests',
-    yk: 'Relay failures',
-    from: 109,
-    ping: 118,
-    seen: 123,
-    back: 130,
-    msg: '2 tests failing.',
-    you: 'Read the output. Same bug. Send it back.',
-  },
-  {
-    a: 'Claude Code',
-    k: 'Fix tests',
-    yk: 'Ask for review',
-    from: 130,
-    ping: 141,
-    seen: 144,
-    back: 149,
-    msg: 'All tests pass.',
-    you: 'Ask Codex to review the repair.',
-  },
-  {
     a: 'Codex',
-    k: 'Re-review',
-    yk: 'Decide',
-    from: 149,
-    ping: 160,
-    seen: 172,
-    back: 181,
-    msg: 'Clean. But a failed token rotation now fails the request.',
-    you: 'Decide: fail the request, or retry once?',
-    dec: true,
+    from: 66,
+    done: 84,
+    seen: 93,
+    you: 'Copy the findings back into Claude Code.',
+    fate: 'lossy',
+    lost: '2 of 3 findings passed on',
   },
   {
+    k: 'Repair',
     a: 'Claude Code',
-    k: 'Apply',
-    yk: 'Check, write up',
-    from: 181,
-    ping: 192,
-    seen: 195,
-    back: 204,
-    msg: 'Done.',
-    you: 'Check staging. Write down what was decided.',
+    from: 95,
+    done: 113,
+    seen: 136,
+    you: 'Back from stand-up. Ask Codex to look again.',
+    fate: 'ok',
+  },
+  {
+    k: 'Re-review',
+    a: 'Codex',
+    from: 138,
+    done: 150,
+    seen: 157,
+    you: '“Looks clean.” Merge it before lunch.',
+    fate: 'ok',
+  },
+  {
+    k: 'Acceptance test',
+    you: 'The criteria were in the first chat, three hours back.',
+    fate: 'forgot',
   },
 ]
+
+/** When the fix was merged, in minutes after 09:00. */
+export const MERGED = 160

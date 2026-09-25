@@ -51,7 +51,7 @@ for (const { path, heading } of pages) {
         await page.goto(path)
         await expect(page.getByRole('heading', { level: 1, name: heading })).toBeVisible()
         await expect(page.locator('#main')).toHaveCount(1)
-        if (path === '/') await expect(page.getByRole('list', { name: 'Task 418, step by step' }).locator('li')).toHaveCount(10)
+        if (path === '/') await expect(page.getByRole('list', { name: 'Task 418, step by step' }).locator('li')).toHaveCount(9)
         if (path === '/research/') await expect(page.locator('aside[aria-label="Contents"] li')).toHaveCount(13)
       } finally {
         await context.close()

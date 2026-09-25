@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { DAY, SPAN, type Ping } from '../src/pages/brief/model/data'
-import { clamp, clock, dayTotals, esc, pad2, pinProgress, stepAt } from '../src/pages/brief/model/lib'
+import { HAND, MERGED, type HandStep } from '../src/pages/brief/model/data'
+import { clamp, clock, esc, handTotals, pad2, pinProgress, stepAt } from '../src/pages/brief/model/lib'
 
 describe('clamp', () => {
   it('keeps values between 0 and 1', () => {
@@ -28,7 +28,7 @@ describe('formatting', () => {
   it('turns minutes after nine into clock times', () => {
     expect(clock(0)).toBe('09:00')
     expect(clock(65)).toBe('10:05')
-    expect(clock(SPAN)).toBe('12:30')
+    expect(clock(MERGED)).toBe('11:40')
   })
 })
 
@@ -59,18 +59,22 @@ describe('pinned panels', () => {
 
 describe('the morning', () => {
   it('adds up to what the slide claims', () => {
-    expect(dayTotals(DAY.length)).toEqual({ interruptions: 7, relays: 6, waiting: 50 })
+    expect(handTotals(HAND.length)).toEqual({ waiting: 62, relays: 5, skipped: 2, lossy: 1 })
   })
   it('starts from nothing', () => {
-    expect(dayTotals(0)).toEqual({ interruptions: 0, relays: 0, waiting: 0 })
-    expect(dayTotals(-3)).toEqual({ interruptions: 0, relays: 0, waiting: 0 })
+    const none = { waiting: 0, relays: 0, skipped: 0, lossy: 0 }
+    expect(handTotals(0)).toEqual(none)
+    expect(handTotals(-3)).toEqual(none)
   })
   it('counts only what has happened so far', () => {
-    const day: Ping[] = [
-      { a: 'Codex', from: 0, ping: 10, seen: 14, back: 20, msg: '', you: '', k: '', yk: '' },
-      { a: 'Codex', from: 20, ping: 30, seen: 31, back: 40, msg: '', you: '', k: '', yk: '', dec: true },
+    const steps: HandStep[] = [
+      { k: 'A', a: 'Codex', from: 0, done: 10, seen: 14, you: '', fate: 'ok' },
+      { k: 'B', you: '', fate: 'forgot' },
+      { k: 'C', a: 'Codex', from: 14, done: 20, seen: 21, you: '', fate: 'lossy', lost: '' },
+      { k: 'D', a: 'Codex', you: '', fate: 'ok' },
     ]
-    expect(dayTotals(1, day)).toEqual({ interruptions: 1, relays: 1, waiting: 4 })
-    expect(dayTotals(2, day)).toEqual({ interruptions: 2, relays: 1, waiting: 5 })
+    expect(handTotals(1, steps)).toEqual({ waiting: 4, relays: 1, skipped: 0, lossy: 0 })
+    expect(handTotals(3, steps)).toEqual({ waiting: 5, relays: 2, skipped: 1, lossy: 1 })
+    expect(handTotals(4, steps).waiting).toBe(5)
   })
 })

@@ -3,7 +3,7 @@ import { Pin } from '../Slide'
 import ui from '../ui.module.css'
 import s from './Open.module.css'
 
-/** The three beats of the panel, told beside the scene each one shows. */
+/** The four beats of the panel, told beside the scene each one shows. */
 const BEATS = [
   {
     k: 'The base',
@@ -16,9 +16,14 @@ const BEATS = [
     t: 'Small teams and large ones get shared memory, hosted runs and approvals from anywhere. Enterprises get it on their own infrastructure, supported. The same core runs underneath, so nothing is lost moving up or back down.',
   },
   {
-    k: 'Why it matters',
-    h: 'It is how we grow, and why a lead can say yes.',
-    t: 'Developers adopt it free and pull in the cloud when their team shares a project. A lead choosing where project knowledge lives is choosing for years: with open source there is no lock-in to weigh.',
+    k: 'How it grows',
+    h: 'Developers bring it in. Teams pay for it.',
+    t: 'Developers adopt it free and pull in the cloud when their team shares a project. Every new adapter and every new user makes it more useful to the next developer.',
+  },
+  {
+    k: 'What a lead checks',
+    h: 'Where project knowledge lives is a choice for years.',
+    t: 'So a lead asks hard questions before saying yes. Open source answers each one with something they can check, not a promise.',
   },
 ] as const
 
@@ -115,33 +120,65 @@ function Stack() {
 }
 
 const LOOP = ['A developer installs it', 'Uses it on a real project', 'The team shares the project', 'The team moves to Cloud'] as const
-const LEAD = ['Read every line', 'Pin a version', 'Host it yourself', 'Fork it, if it comes to that'] as const
 
-/** Beat three: the growth loop, and the lead's checklist. */
-function Why() {
+/** Beat three: the growth loop. */
+function Loop() {
   return (
-    <div className={cx(s.scene, s.why)}>
-      <div className={s.loop}>
-        <p className={s.sk}>How it grows</p>
-        <ol>
-          {LOOP.map((l, j) => (
-            <li key={l}>
-              <span>{j + 1}</span>
-              {l}
-            </li>
-          ))}
-        </ol>
-        <p className={s.back}>More adapters and more users bring the next developer in</p>
+    <div className={cx(s.scene, s.loop)}>
+      <p className={s.sk}>How it grows</p>
+      <ol>
+        {LOOP.map((l, j) => (
+          <li key={l}>
+            <span>{j + 1}</span>
+            {l}
+          </li>
+        ))}
+      </ol>
+      <p className={s.back}>More adapters and more users bring the next developer in</p>
+    </div>
+  )
+}
+
+/** A platform team's vendor review: each question, the answer, and where to check it. */
+const REVIEW = [
+  ['Can we read what it does?', 'All of it: memory, coordinator and every adapter.', 'source, every line'],
+  ['Where does project knowledge live?', 'In our repository, as Markdown, reviewed in pull requests like code.', '.charrette/memory/*.md'],
+  [
+    'Does our code leave our network?',
+    'Only to the model providers we already use. It can run entirely on our own infrastructure.',
+    'self-hosted',
+  ],
+  ['Whose keys, whose bill?', 'Our existing subscriptions and API keys. No markup on compute.', 'bring your own keys'],
+  ['What if the vendor goes away?', 'Pin a version or fork it. The memory still opens in any editor.', 'fork · pin · export'],
+] as const
+
+/** Beat four: the lead's due diligence, answered. */
+function Review() {
+  return (
+    <div className={cx(s.scene, s.review)}>
+      <div className={s.rvH}>
+        <span>
+          <b>Vendor review</b> Charrette
+        </span>
+        <span>
+          Platform team · {REVIEW.length} of {REVIEW.length} answered
+        </span>
       </div>
-      <div className={s.lead}>
-        <p className={s.sk}>What a lead checks</p>
-        <ul>
-          {LEAD.map((l) => (
-            <li key={l}>{l}</li>
-          ))}
-        </ul>
-        <p className={s.stamp}>No lock-in</p>
-      </div>
+      <ul className={s.rv}>
+        {REVIEW.map(([q, a, e]) => (
+          <li key={q}>
+            <span className={s.ok} aria-hidden="true">
+              ✓
+            </span>
+            <div>
+              <b>{q}</b>
+              <p>{a}</p>
+            </div>
+            <code>{e}</code>
+          </li>
+        ))}
+      </ul>
+      <p className={s.stamp}>No lock-in to weigh</p>
     </div>
   )
 }
@@ -168,11 +205,12 @@ export function Open() {
           </div>
           <figure
             className={s.fig}
-            aria-label="Charrette on your desktop, the cloud and enterprise offerings built on it, and why that grows"
+            aria-label="Charrette on your desktop, the cloud and enterprise offerings built on it, how that grows, and a lead's review of it"
           >
             <Desktop />
             <Stack />
-            <Why />
+            <Loop />
+            <Review />
           </figure>
         </div>
       )}
