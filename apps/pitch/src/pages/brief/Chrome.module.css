@@ -7,7 +7,8 @@
 .pages a { opacity: .72; }
 .pages a[aria-current], .pages a:hover { opacity: 1; }
 .prog { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 21; }
-.prog i { display: block; height: 100%; width: 100%; transform-origin: left; transform: scaleX(0); background: var(--hot); }
+.prog i { display: block; height: 100%; width: 100%; transform-origin: left; transform: scaleX(0); background: var(--cobalt); transition: background 200ms; }
+[data-tone='dark'].prog i { background: var(--lime); }
 .count { position: fixed; right: var(--edge); bottom: 18px; z-index: 20; margin: 0; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; transition: color 200ms, opacity 200ms; pointer-events: none; color: var(--ink); }
 .count b { font-weight: 500; opacity: .72; margin-left: 10px; }
 .count.last { opacity: 0; }

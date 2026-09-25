@@ -6,6 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { App } from '../src/App'
 import { Arch } from '../src/pages/brief/slides/Arch'
+import { CAMERA, FACTS } from '../src/pages/brief/model/memory'
 import { onFrame, PIN_QUERY } from '../src/pages/brief/scroll'
 
 interface Query {
@@ -93,20 +94,98 @@ describe('client behavior', () => {
 
     render(<App pathname="/" />)
     expect(document.title).toBe('Charrette · Brief')
-    expect(document.querySelectorAll('#flow svg g')).toHaveLength(2)
+    const stage = (): Element | null => document.querySelector('#flow [data-phase]')
+    expect(document.querySelectorAll('#flow [data-node]')).toHaveLength(1)
+    expect(stage()?.getAttribute('data-phase')).toBe('task')
+
+    // 13 steps over 2,100px of scroll: step 9 is the Record step, the whole task graph
+    flowTop = -1_575
+    act(() => {
+      fireEvent.scroll(window)
+    })
+    expect(document.querySelectorAll('#flow [data-node]')).toHaveLength(10)
+    expect(document.querySelectorAll('#flow [data-fact]')).toHaveLength(0)
+    expect(stage()?.getAttribute('data-phase')).toBe('task')
+
+    // one more step and the camera pans onto the project's memory
+    flowTop = -1_750
+    act(() => {
+      fireEvent.scroll(window)
+    })
+    expect(stage()?.getAttribute('data-phase')).toBe('memory')
+    expect(document.querySelectorAll('#flow [data-fact]').length).toBeGreaterThan(0)
+    expect(document.querySelector('#flow svg')?.getAttribute('viewBox')).toBe(CAMERA.memory.map((v) => v.toFixed(1)).join(' '))
 
     flowTop = -2_100
     act(() => {
       fireEvent.scroll(window)
     })
-    expect(document.querySelectorAll('#flow svg g')).toHaveLength(10)
+    expect(document.querySelectorAll('#flow [data-fact]')).toHaveLength(FACTS.length)
+    expect(document.querySelector('#flow')?.textContent).toContain('Shared by the team')
     expect(screen.getByRole('list', { name: 'Task 418, step by step' }).querySelectorAll('li')).toHaveLength(10)
+  })
+
+  it('darkens the hero into the next panel after its last step', () => {
+    let heroTop = 0
+    vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockImplementation(function (this: HTMLElement) {
+      return this.id === 'top' ? 2_430 : 0
+    })
+    vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(function (this: Element) {
+      if (this.id === 'top') return { top: heroTop, height: 2_430 } as DOMRect
+      return { top: 1_000, height: 0 } as DOMRect
+    })
+
+    render(<App pathname="/" />)
+    const hero = document.getElementById('top')
+    expect(hero?.style.getPropertyValue('--r')).toBe('0.0000')
+    expect(hero?.dataset.tone).toBe('light')
+
+    // past the last step, 0.6 of a screen into the 0.7-screen tail
+    heroTop = -1_440
+    act(() => {
+      fireEvent.scroll(window)
+    })
+    expect(hero?.style.getPropertyValue('--p')).toBe('1.0000')
+    expect(Number(hero?.style.getPropertyValue('--r'))).toBeCloseTo(0.857, 2)
+    expect(hero?.dataset.tone).toBe('dark')
+  })
+
+  it('eases the camera when the figure is on screen', () => {
+    let flowTop = 900
+    vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(function (this: Element) {
+      if (this.id === 'flow') return { top: flowTop, height: 3_000 } as DOMRect
+      return { top: 100, bottom: 500, height: 400 } as DOMRect
+    })
+    const frames: FrameRequestCallback[] = []
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => frames.push(callback))
+    const now = vi.spyOn(performance, 'now').mockReturnValue(0)
+    render(<App pathname="/" />)
+    const svg = document.querySelector('#flow svg')
+    flowTop = -2_100
+    act(() => {
+      fireEvent.scroll(window)
+      for (const f of frames.splice(0)) f(0)
+    })
+    now.mockReturnValue(450)
+    act(() => {
+      for (const f of frames.splice(0)) f(0)
+    })
+    const mid = svg?.getAttribute('viewBox')
+    expect(mid).not.toBe(CAMERA.task.join(' '))
+    expect(mid).not.toBe(CAMERA.memory.map((v) => v.toFixed(1)).join(' '))
+    now.mockReturnValue(2_000)
+    act(() => {
+      for (const f of frames.splice(0)) f(0)
+    })
+    expect(svg?.getAttribute('viewBox')).toBe(CAMERA.memory.map((v) => v.toFixed(1)).join(' '))
   })
 
   it('keeps the final graph visible when pinning is disabled', () => {
     setMedia(PIN_QUERY, false)
     render(<App pathname="/" />)
-    expect(document.querySelectorAll('#flow svg g')).toHaveLength(10)
+    expect(document.querySelectorAll('#flow [data-node]')).toHaveLength(10)
+    expect(document.querySelector('#flow [data-phase]')?.getAttribute('data-phase')).toBe('task')
+    expect(screen.getByRole('heading', { name: 'Every task leaves the project knowing more.' })).toBeTruthy()
     expect(document.querySelector('#bus')?.textContent).toContain('Seven interruptions. One needed you.')
   })
 

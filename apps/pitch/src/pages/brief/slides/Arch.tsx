@@ -30,6 +30,12 @@ function useRotation(n: number, ms: number): number {
   return k
 }
 
+const YOURS = [
+  { k: 'Repository', t: 'Your code and its history, where it already lives.' },
+  { k: 'Subscriptions and keys', t: 'Your Claude, ChatGPT and Cursor plans, your API keys.' },
+  { k: 'Machines', t: 'Your laptop, or your servers. Nothing leaves unless you send it.' },
+] as const
+
 export function Arch() {
   const on = useRotation(AGENTS.length, 2200)
   return (
@@ -37,53 +43,54 @@ export function Arch() {
       <div className={ui.wrap}>
         <p className={cx(ui.kicker, s.kicker)}>Where Charrette sits</p>
         <h2>A persistent layer between your team and whichever agents you use.</h2>
-        <div className={s.stack}>
-          <div className={s.layer}>
-            <p className={s.lK}>
-              Agents<small>Replaceable. Use whichever is best this month.</small>
-            </p>
-            <div className={s.chips}>
-              {AGENTS.map((a, j) => (
-                <span key={a} className={cx(j === on && s.on)}>
-                  {a}
-                </span>
-              ))}
-              <span className={s.next}>What ships next</span>
-            </div>
-          </div>
-          <div className={cx(s.layer, s.lCore)}>
-            <p className={s.lK}>
-              Charrette<small>Persists. Owned by the project and its team.</small>
-            </p>
-            <div className={s.core}>
-              <div>
-                <b>Project memory</b>
-                <span>Facts and decisions, each with its status and source</span>
-              </div>
-              <div>
-                <b>Coordinator</b>
-                <span>Graphs, routing, review, the attention boundary</span>
-              </div>
-              <div>
-                <b>Tasks and artifacts</b>
-                <span>Bounded work and everything it produced</span>
-              </div>
-            </div>
-            <p className={s.foot}>
-              Next task briefed from 6 facts · running on <b>{AGENTS[on]}</b>
-            </p>
-          </div>
-          <div className={s.layer}>
-            <p className={s.lK}>
-              Yours<small>Nothing leaves unless you send it.</small>
-            </p>
-            <div className={cx(s.chips, s.plain)}>
-              <span>Your repositories</span>
-              <span>Your subscriptions and API keys</span>
-              <span>Your laptop, or your servers</span>
-            </div>
+        <div className={s.agents}>
+          <p className={s.lK}>
+            Agents<small>Replaceable. Use whichever is best this month.</small>
+          </p>
+          <div className={s.chips}>
+            {AGENTS.map((a, j) => (
+              <span key={a} className={cx(j === on && s.on)}>
+                {a}
+              </span>
+            ))}
+            <span className={s.next}>What ships next</span>
           </div>
         </div>
+        <div className={s.plug} aria-hidden="true">
+          <i />
+          <span>
+            Next task briefed from 6 facts · running on <b>{AGENTS[on]}</b>
+          </span>
+          <i />
+        </div>
+        <section className={s.yours} aria-labelledby="yours-k">
+          <p className={s.yoursK} id="yours-k">
+            Yours
+          </p>
+          <div className={s.tiles}>
+            <div className={cx(s.tile, s.core)}>
+              <div>
+                <small>Your project layer</small>
+                <b>Charrette</b>
+              </div>
+              <span>
+                Project memory, the coordinator, tasks and everything they produced. Open source, in an open format, on top of everything
+                else that’s already yours.
+              </span>
+            </div>
+            {YOURS.map((y) => (
+              <div key={y.k} className={s.tile}>
+                <small>Your</small>
+                <b>{y.k}</b>
+                <span>{y.t}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+        <p className={s.cap}>
+          Mixing labs is the point: a reviewer from a different lab from the author is one of the strongest checks there is, and no lab will
+          sell you an independent reviewer of its own model.
+        </p>
       </div>
     </Slide>
   )

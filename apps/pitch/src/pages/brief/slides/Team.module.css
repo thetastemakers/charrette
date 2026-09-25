@@ -1,7 +1,7 @@
 /* 08 · the experience */
 
 .team { background: var(--cream); }
-.kicker { color: var(--hot-ink); }
+.kicker { color: var(--cobalt); }
 .split { grid-template-columns: minmax(0, .6fr) minmax(0, 1.4fr); gap: 48px; }
 .split h2 { font-size: clamp(32px, 3.3vw, 48px); margin-bottom: 28px; }
 .pts li { padding: 12px 0; font-size: 16px; border-color: rgba(16, 16, 18, .14); color: var(--ink-2); }

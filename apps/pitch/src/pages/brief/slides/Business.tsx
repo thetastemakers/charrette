@@ -3,57 +3,70 @@ import { Slide } from '../Slide'
 import ui from '../ui.module.css'
 import s from './Business.module.css'
 
+/** How a customer moves through Charrette: one developer, then their team, then their organisation. */
+const TIERS = [
+  {
+    k: 'Open source',
+    price: 'Free',
+    per: 'forever',
+    who: 'One developer, on their own machine',
+    has: ['The full memory and coordinator', 'Any agent, any model', 'Local-first, open format'],
+    next: 'Moves up when a second person joins the project',
+  },
+  {
+    k: 'Charrette Cloud',
+    price: 'Per seat',
+    per: 'monthly',
+    who: 'Teams, small and large, on one project record',
+    has: ['Shared memory across people and machines', 'Decisions with authors and history', 'Hosted runs, approvals from your phone'],
+    next: 'Moves up when policy, audit or residency apply',
+  },
+  {
+    k: 'Enterprise',
+    price: 'Licence',
+    per: 'annual',
+    who: 'Organisations, on their own infrastructure',
+    has: ['SSO, audit and retention', 'Knowledge shared across projects', 'Support and security review'],
+    next: 'Expands with every project that adopts it',
+  },
+] as const
+
 export function Business() {
   return (
     <Slide id="business" tone="dark" name="The business" className={s.biz}>
       <div className={ui.wrap}>
         <p className={cx(ui.kicker, s.kicker)}>The business</p>
         <h2>Charge for coordination, never for compute.</h2>
-        <p className={cx(ui.body, s.body)}>
-          Teams bring their own agents and spend. They pay for what no single agent gives them: a shared project record, sync, governance
-          and support. Charrette adds to an AI budget instead of competing for it, and stays out of a price war with the labs.
-        </p>
-        <div className={s.tiers}>
-          <div className={s.tier}>
-            <p className={s.tK}>Open source</p>
-            <b>Charrette</b>
-            <p className={s.tWho}>One developer</p>
-            <ul>
-              <li>The full memory and coordinator</li>
-              <li>Any agent, any model</li>
-              <li>Local-first, open format</li>
-              <li>Complete, not a trial</li>
-            </ul>
-            <p className={s.tP}>Free · the adoption engine</p>
-          </div>
-          <div className={s.tier}>
-            <p className={s.tK}>Cloud</p>
-            <b>Charrette for teams</b>
-            <p className={s.tWho}>Several people, one project record</p>
-            <ul>
-              <li>Shared memory across people and machines</li>
-              <li>Decisions with authors and history</li>
-              <li>Hosted, long-running agent runs</li>
-              <li>Approvals from anywhere, including mobile</li>
-            </ul>
-            <p className={s.tP}>Per seat or per active project</p>
-          </div>
-          <div className={s.tier}>
-            <p className={s.tK}>Enterprise</p>
-            <b>Self-hosted, supported</b>
-            <p className={s.tWho}>Organisations with policy</p>
-            <ul>
-              <li>SSO, audit and retention</li>
-              <li>Deployed on your infrastructure</li>
-              <li>Knowledge shared across projects</li>
-              <li>Support and security review</li>
-            </ul>
-            <p className={s.tP}>Annual licence</p>
-          </div>
+        <div className={s.bills}>
+          <p>
+            <span>Compute</span>
+            <b>Paid to the labs</b> through the subscriptions and keys your team already has. We add nothing to it.
+          </p>
+          <p className={s.ours}>
+            <span>Coordination</span>
+            <b>Paid to Charrette</b> for what no single agent gives you: one project record, sync, governance and support.
+          </p>
         </div>
+        <ol className={s.tiers}>
+          {TIERS.map((t) => (
+            <li key={t.k} className={s.tier}>
+              <p className={s.tK}>{t.k}</p>
+              <p className={s.price}>
+                <b>{t.price}</b> {t.per}
+              </p>
+              <p className={s.tWho}>{t.who}</p>
+              <ul>
+                {t.has.map((h) => (
+                  <li key={h}>{h}</li>
+                ))}
+              </ul>
+              <p className={s.tNext}>{t.next}</p>
+            </li>
+          ))}
+        </ol>
         <p className={s.cap}>
-          The model behind GitLab, Sentry, PostHog and Tailscale: free and complete for the individual, paid where a team needs sync,
-          control and someone to call.
+          Adds to an AI budget instead of competing for it, and stays out of a price war with the labs. The model behind GitLab, Sentry,
+          PostHog and Tailscale: free and complete for the individual, paid where a team needs sync, control and someone to call.
         </p>
       </div>
     </Slide>

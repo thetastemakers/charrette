@@ -1,4 +1,4 @@
-import { DAY, DAY_START, SPAN, type Ping } from './data'
+import { DAY, type Ping } from './data'
 
 export const clamp = (v: number): number => Math.max(0, Math.min(1, v))
 
@@ -7,9 +7,6 @@ const ENTITIES: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;
 export const esc = (s: unknown): string => String(s).replace(/[&<>"]/g, (c) => ENTITIES[c] ?? c)
 
 export const pad2 = (n: number): string => String(n).padStart(2, '0')
-
-/** A minute of the morning as a share of the timeline's width. */
-export const pct = (m: number): string => `${((m / SPAN) * 100).toFixed(2)}%`
 
 /** Minutes after 09:00 as a clock time. */
 export const clock = (m: number): string => `${pad2(9 + Math.floor(m / 60))}:${pad2(m % 60)}`
@@ -40,11 +37,4 @@ export function dayTotals(n: number, day: readonly Ping[] = DAY): DayTotals {
     relays: seen.filter((e) => !e.dec).length,
     waiting: seen.reduce((m, e) => m + e.seen - e.ping, 0),
   }
-}
-
-/** The minute the morning's timeline is revealed up to at step `k` of the panel. */
-export function dayReveal(k: number, day: readonly Ping[] = DAY, start: number = DAY_START): number {
-  if (k <= 0) return start
-  if (k > day.length) return SPAN
-  return day[k - 1]?.back ?? SPAN
 }

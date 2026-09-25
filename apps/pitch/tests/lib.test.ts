@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { DAY, DAY_START, SPAN, type Ping } from '../src/pages/brief/model/data'
-import { clamp, clock, dayReveal, dayTotals, esc, pad2, pct, pinProgress, stepAt } from '../src/pages/brief/model/lib'
+import { DAY, SPAN, type Ping } from '../src/pages/brief/model/data'
+import { clamp, clock, dayTotals, esc, pad2, pinProgress, stepAt } from '../src/pages/brief/model/lib'
 
 describe('clamp', () => {
   it('keeps values between 0 and 1', () => {
@@ -29,11 +29,6 @@ describe('formatting', () => {
     expect(clock(0)).toBe('09:00')
     expect(clock(65)).toBe('10:05')
     expect(clock(SPAN)).toBe('12:30')
-  })
-  it('turns minutes into a share of the morning', () => {
-    expect(pct(0)).toBe('0.00%')
-    expect(pct(SPAN / 2)).toBe('50.00%')
-    expect(pct(SPAN)).toBe('100.00%')
   })
 })
 
@@ -72,16 +67,10 @@ describe('the morning', () => {
   })
   it('counts only what has happened so far', () => {
     const day: Ping[] = [
-      { a: 'Codex', from: 0, ping: 10, seen: 14, back: 20, msg: '', you: '' },
-      { a: 'Codex', from: 20, ping: 30, seen: 31, back: 40, msg: '', you: '', dec: true },
+      { a: 'Codex', from: 0, ping: 10, seen: 14, back: 20, msg: '', you: '', k: '', yk: '' },
+      { a: 'Codex', from: 20, ping: 30, seen: 31, back: 40, msg: '', you: '', k: '', yk: '', dec: true },
     ]
     expect(dayTotals(1, day)).toEqual({ interruptions: 1, relays: 1, waiting: 4 })
     expect(dayTotals(2, day)).toEqual({ interruptions: 2, relays: 1, waiting: 5 })
-  })
-  it('reveals the timeline up to each return to work, then all of it', () => {
-    expect(dayReveal(0)).toBe(DAY_START)
-    expect(dayReveal(1)).toBe(DAY[0]?.back)
-    expect(dayReveal(DAY.length)).toBe(DAY.at(-1)?.back)
-    expect(dayReveal(DAY.length + 1)).toBe(SPAN)
   })
 })

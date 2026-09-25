@@ -15,7 +15,7 @@
 .pts b { font-weight: 800; }
 .frame { border-radius: 10px; overflow: hidden; background: #111215; box-shadow: 0 1px 0 rgba(255, 255, 255, .06) inset, 0 40px 80px -30px rgba(0, 0, 0, .45), 0 0 0 1px rgba(0, 0, 0, .2); }
 .answer { margin: 0; font: 500 13px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
-.answer span { color: var(--hot-ink); margin: 0 6px; }
+.answer span { color: var(--cobalt); margin: 0 6px; }
 
 @media (max-width: 900px) {
   .split { grid-template-columns: minmax(0, 1fr); gap: 40px; }

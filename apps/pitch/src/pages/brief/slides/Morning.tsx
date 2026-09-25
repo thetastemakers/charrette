@@ -1,53 +1,116 @@
 import { cx } from '../../../lib/cx'
 import { vars } from '../../../lib/vars'
+import { board, type AgentState, type Side, type Wire } from '../model/bus'
 import { DAY } from '../model/data'
-import { laneSegments, type Seg } from '../model/geometry'
-import { clock, dayReveal, dayTotals, pct } from '../model/lib'
+import { clock, dayTotals, pad2 } from '../model/lib'
 import { Pin } from '../Slide'
 import ui from '../ui.module.css'
 import s from './Morning.module.css'
 
-const LANES = laneSegments()
-const HOURS = ['09:00', '10:00', '11:00', '12:00']
-const KEY: readonly [string, string][] = [
-  ['var(--lime)', 'Focused'],
-  ['var(--hot)', 'Pulled out'],
-  ['#7d7d84', 'Agent working'],
-  ['repeating-linear-gradient(135deg,var(--hot) 0 2px,transparent 2px 4px)', 'Agent waiting on you'],
-]
 /** Step 0 is the brief, one step per interruption, then the sum. */
 const STEPS = DAY.length + 2
 
-function Lane({ label, segs, t }: { label: string; segs: Seg[]; t: string }) {
+function AgentCard({ st }: { st: AgentState }) {
   return (
-    <div className={s.lane}>
-      <span>{label}</span>
-      <div className={s.track}>
-        <div className={s.segs} style={vars({ '--t': t })}>
-          {segs.map((g) => (
-            <i key={`${g.kind}-${g.from}`} className={s[g.kind]} style={{ left: pct(g.from), width: pct(g.to - g.from) }} />
-          ))}
-        </div>
-      </div>
+    <div className={cx(s.agent, s[st.mode])}>
+      <b>{st.a}</b>
+      <small>{st.lab}</small>
+      <span className={s.status}>{st.status}</span>
     </div>
   )
 }
 
-/** The notifications, oldest first. The panel shows the latest few at a time. */
-function Log({ n }: { n: number }) {
-  const at = (j: number): string | undefined => {
-    const d = n - j
-    return cx(d >= 0 && d < 3 && s.on, d === 1 && s.old, d === 2 && s.old2, d === 0 && s.fresh)
+/** One side's two wires: the message coming in to you on top, what you send back out below. */
+function Wires({ side, into, out }: { side: Side; into?: Wire; out?: Wire }) {
+  const w = (wire: Wire | undefined, dir: 'in' | 'out') => {
+    const on = wire?.side === side ? wire : undefined
+    return (
+      <div className={cx(s.wire, s[dir], on && s.live, on && s[on.tone])}>
+        <span className={s.wl}>{on?.label}</span>
+        <i />
+      </div>
+    )
   }
   return (
+    <div className={cx(s.wires, s[side])}>
+      {w(into, 'in')}
+      {w(out, 'out')}
+    </div>
+  )
+}
+
+/**
+ * The morning at step `k`: Claude Code on the left, Codex on the right, and
+ * you in the middle. Every message between them goes through you.
+ */
+export function Switchboard({ k }: { k: number }) {
+  const b = board(k)
+  return (
+    <div className={s.board} aria-hidden="true">
+      <AgentCard st={b.agents.left} />
+      <Wires side="left" into={b.in} out={b.out} />
+      <div className={cx(s.me, b.you && s[b.you.tone])}>
+        <span className={s.dot}>You</span>
+        <span className={s.act}>{b.you?.label ?? 'Back to your own work'}</span>
+        <span className={s.tally}>
+          {DAY.map((e, j) => (
+            <i key={e.seen} className={cx(j < b.tally.length && (b.tally[j] ? s.tDec : s.tRelay))} />
+          ))}
+        </span>
+      </div>
+      <Wires side="right" into={b.in} out={b.out} />
+      <AgentCard st={b.agents.right} />
+    </div>
+  )
+}
+
+/** The caption under the switchboard: the interruption being told. */
+export function BusCard({ k }: { k: number }) {
+  const e = DAY[k - 1]
+  if (!e) {
+    return (
+      <div className={s.card} aria-hidden="true">
+        <p className={s.cN}>
+          <b>{clock(0)}</b>
+        </p>
+        <div>
+          <p className={s.cH}>You brief Claude Code</p>
+          <p className={s.cW}>on the token-refresh bug</p>
+        </div>
+        <p className={s.cP}>Then back to your own work. For about half an hour.</p>
+      </div>
+    )
+  }
+  return (
+    <div className={s.card} aria-hidden="true">
+      <p className={s.cN}>
+        <b>{pad2(k)}</b>/ {pad2(DAY.length)}
+      </p>
+      <div>
+        <p className={s.cH}>“{e.msg}”</p>
+        <p className={s.cW}>
+          {e.a} · done {clock(e.ping)}, seen {clock(e.seen)}
+        </p>
+      </div>
+      <p className={s.cP}>
+        <span className={cx(s.tag, e.dec && s.dec)}>{e.dec ? 'A real decision' : 'Passing it on'}</span>
+        You: {e.you}
+      </p>
+    </div>
+  )
+}
+
+/** The notifications, oldest first: the figure itself on small screens. */
+function Log() {
+  return (
     <ol className={s.log} aria-hidden="true">
-      <li className={cx(s.start, at(0))} style={vars({ '--i': 0 })}>
+      <li className={s.start}>
         <span className={s.t}>09:00</span>
         <span className={s.who}>You</span> <span className={s.msg}>brief Claude Code on the token-refresh bug.</span>
         <span className={s.you}>Back to your own work.</span>
       </li>
       {DAY.map((e, j) => (
-        <li key={e.seen} className={cx(e.dec && s.dec, at(j + 1))} style={vars({ '--i': j + 1 })}>
+        <li key={e.seen} className={cx(e.dec && s.dec)} style={vars({ '--i': j + 1 })}>
           <span className={s.no}>{j + 1}</span>
           <span className={s.tag}>{e.dec ? 'A real decision' : 'Passing it on'}</span>
           <span className={s.t}>{clock(e.seen)}</span>
@@ -63,9 +126,8 @@ export function Morning() {
   return (
     <Pin id="bus" tone="light" name="The message bus" className={s.p2} steps={STEPS}>
       {(k) => {
-        const n = Math.min(k, DAY.length)
-        const t = pct(dayReveal(k))
-        const sum = dayTotals(n)
+        const sum = dayTotals(Math.min(k, DAY.length))
+        const done = k > DAY.length
         return (
           <div className={ui.wrap}>
             <div className={s.head}>
@@ -94,41 +156,27 @@ export function Morning() {
                 </div>
               </div>
             </div>
-            <figure className={cx(s.day, k > DAY.length && s.done)} aria-label="One morning spent fixing one bug with two agents">
+            <figure className={cx(s.day, done && s.done)} aria-label="One morning spent fixing one bug with two agents">
               <figcaption className={s.dayH}>
                 <span>One bug fix, one morning</span>
-                <span className={s.axis}>
-                  {HOURS.map((h, j) => (
-                    <i key={h} style={{ left: pct(j * 60) }}>
-                      {h}
-                    </i>
-                  ))}
+                <span className={s.clock} aria-hidden="true">
+                  {k === 0 ? clock(0) : k > DAY.length ? `${clock(0)}–${clock(DAY.at(-1)?.back ?? 0)}` : clock(DAY[k - 1]?.seen ?? 0)}
                 </span>
               </figcaption>
-              <div className={s.lanes} aria-hidden="true">
-                <div className={s.lane}>
-                  <span />
-                  <div className={s.marks}>
-                    {DAY.map((e, j) => (
-                      <b key={e.seen} className={cx(e.dec && s.dec, j < n && s.on)} style={{ left: pct(e.seen) }}>
-                        {j + 1}
-                      </b>
-                    ))}
-                  </div>
+              <Switchboard k={k} />
+              {done ? (
+                <div className={s.sum}>
+                  <p>
+                    <b>Seven interruptions. One needed you.</b> The other six were you carrying a message from one agent to the next.
+                  </p>
+                  <p className={s.then}>
+                    With Charrette <span>→</span> the one question, and nothing else
+                  </p>
                 </div>
-                <Lane label="Your work" segs={LANES.you} t={t} />
-                <Lane label="Claude Code" segs={LANES.claude} t={t} />
-                <Lane label="Codex" segs={LANES.codex} t={t} />
-                <p className={s.key}>
-                  {KEY.map(([bg, label]) => (
-                    <span key={label}>
-                      <i style={{ background: bg }} />
-                      {label}
-                    </span>
-                  ))}
-                </p>
-              </div>
-              <Log n={n} />
+              ) : (
+                <BusCard k={k} />
+              )}
+              <Log />
               <ol className="sr-only" aria-label="The morning, interruption by interruption">
                 {DAY.map((e, j) => (
                   <li key={e.seen}>
@@ -136,14 +184,6 @@ export function Morning() {
                   </li>
                 ))}
               </ol>
-              <div className={s.sum}>
-                <p>
-                  <b>Seven interruptions. One needed you.</b> The other six were you carrying a message from one agent to the next.
-                </p>
-                <p className={s.then}>
-                  With Charrette <span>→</span> the one question, and nothing else
-                </p>
-              </div>
             </figure>
           </div>
         )

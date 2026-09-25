@@ -51,7 +51,7 @@ export function Chrome({ deck, total, first }: { deck: RefObject<HTMLElement | n
           <a href={researchHref}>Research note</a>
         </nav>
       </header>
-      <div className={s.prog} aria-hidden="true">
+      <div className={s.prog} data-tone={at.tone} aria-hidden="true">
         <i ref={bar} />
       </div>
       <p className={cx(s.count, at.index === total - 1 && s.last)} data-tone={at.tone} aria-hidden="true">

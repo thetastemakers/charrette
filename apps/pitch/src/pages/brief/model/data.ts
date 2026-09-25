@@ -134,6 +134,10 @@ export const STEPS: readonly Step[] = [
 /** One time an agent came back to you. Times are minutes after 09:00. */
 export interface Ping {
   a: 'Claude Code' | 'Codex'
+  /** What the agent was doing, as named on its graph node. */
+  k: string
+  /** What you did about it, as named on your graph node. */
+  yk: string
   /** The agent starts working. */
   from: number
   /** The agent is done and waiting. */
@@ -156,6 +160,8 @@ export const SPAN = 210
 export const DAY: readonly Ping[] = [
   {
     a: 'Claude Code',
+    k: 'Implement',
+    yk: 'Relay the diff',
     from: 5,
     ping: 32,
     seen: 41,
@@ -165,6 +171,8 @@ export const DAY: readonly Ping[] = [
   },
   {
     a: 'Codex',
+    k: 'Review',
+    yk: 'Relay findings',
     from: 47,
     ping: 62,
     seen: 65,
@@ -172,9 +180,21 @@ export const DAY: readonly Ping[] = [
     msg: 'Same bug at 3 more call sites.',
     you: 'Paste the findings back into Claude Code.',
   },
-  { a: 'Claude Code', from: 71, ping: 89, seen: 104, back: 109, msg: 'Fixed all four. Shall I run the tests?', you: 'Yes.' },
   {
     a: 'Claude Code',
+    k: 'Repair',
+    yk: 'Say yes',
+    from: 71,
+    ping: 89,
+    seen: 104,
+    back: 109,
+    msg: 'Fixed all four. Shall I run the tests?',
+    you: 'Yes.',
+  },
+  {
+    a: 'Claude Code',
+    k: 'Run tests',
+    yk: 'Relay failures',
     from: 109,
     ping: 118,
     seen: 123,
@@ -182,9 +202,21 @@ export const DAY: readonly Ping[] = [
     msg: '2 tests failing.',
     you: 'Read the output. Same bug. Send it back.',
   },
-  { a: 'Claude Code', from: 130, ping: 141, seen: 144, back: 149, msg: 'All tests pass.', you: 'Ask Codex to review the repair.' },
+  {
+    a: 'Claude Code',
+    k: 'Fix tests',
+    yk: 'Ask for review',
+    from: 130,
+    ping: 141,
+    seen: 144,
+    back: 149,
+    msg: 'All tests pass.',
+    you: 'Ask Codex to review the repair.',
+  },
   {
     a: 'Codex',
+    k: 'Re-review',
+    yk: 'Decide',
     from: 149,
     ping: 160,
     seen: 172,
@@ -193,5 +225,15 @@ export const DAY: readonly Ping[] = [
     you: 'Decide: fail the request, or retry once?',
     dec: true,
   },
-  { a: 'Claude Code', from: 181, ping: 192, seen: 195, back: 204, msg: 'Done.', you: 'Check staging. Write down what was decided.' },
+  {
+    a: 'Claude Code',
+    k: 'Apply',
+    yk: 'Check, write up',
+    from: 181,
+    ping: 192,
+    seen: 195,
+    back: 204,
+    msg: 'Done.',
+    you: 'Check staging. Write down what was decided.',
+  },
 ]

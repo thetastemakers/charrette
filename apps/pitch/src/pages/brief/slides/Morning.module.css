@@ -1,4 +1,6 @@
-/* 05 · problem two: one morning, one bug, seven interruptions */
+/* 04 · problem two: one morning, one bug, seven interruptions. Two agents and
+   you wired between them: every message goes through you. Orange stays here:
+   it is the cost of working without Charrette, and nowhere else. */
 
 .p2 { background: var(--hot); }
 .kicker { color: var(--ink); }
@@ -9,77 +11,103 @@
 .nums b { display: block; font-size: 52px; font-weight: 900; line-height: .9; letter-spacing: -.06em; font-variant-numeric: tabular-nums; }
 .nums span { display: block; margin-top: 6px; font-size: 13.5px; line-height: 1.3; font-weight: 600; }
 
-.day { margin: 0; background: var(--ink); color: #fff; border-radius: 14px; padding: 20px 24px; }
-.day-h { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 16px; align-items: end; margin-bottom: 8px; font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: #9a9aa0; }
-.day-h > span:first-child { grid-column: 1 / -1; color: #fff; font: 800 17px var(--sans); letter-spacing: -.02em; text-transform: none; margin-bottom: 4px; }
-.axis { grid-column: 2; position: relative; height: 14px; }
-.axis i { position: absolute; top: 0; font-style: normal; white-space: nowrap; }
+.day { margin: 0; background: var(--ink); color: #fff; border-radius: 14px; padding: 20px 24px 22px; }
+.day-h { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+.day-h > span:first-child { font: 800 17px var(--sans); letter-spacing: -.02em; }
+.clock { font: 500 13px var(--mono); color: #9a9aa0; font-variant-numeric: tabular-nums; }
 
-.lanes { display: grid; gap: 8px; }
-.lane { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 16px; align-items: center; }
-.lane > span { font: 500 12px var(--mono); color: #c4c4c8; }
-.track { position: relative; height: 22px; border-radius: 4px; background: var(--night-2); overflow: hidden; }
-.track i { position: absolute; top: 0; bottom: 0; }
-.focus { background: var(--lime); opacity: .9; }
-.out { background: var(--hot); }
-.run { background: #7d7d84; }
-.wait { background: repeating-linear-gradient(135deg, var(--hot) 0 3px, transparent 3px 7px); opacity: .9; }
-.brief { background: #fff; }
-.segs { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--t, 100%)) 0 0); transition: clip-path 600ms cubic-bezier(.6, 0, .2, 1); }
-/* one numbered flag per interruption, above your own lane */
-.marks { position: relative; height: 22px; }
-.marks b { position: absolute; top: 0; width: 20px; height: 20px; margin-left: -10px; border-radius: 50%; display: grid; place-items: center; font: 600 11px var(--mono); background: #fff; color: var(--ink); opacity: 0; transform: translateY(6px) scale(.6); transition: opacity 250ms, transform 350ms cubic-bezier(.3, 1.6, .5, 1); }
-.marks b.dec { background: var(--hot); }
-.marks b.on { opacity: 1; transform: none; }
-.key { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 10px 0 0 136px; font: 400 11px var(--mono); color: #9a9aa0; }
-.key i { display: inline-block; width: 12px; height: 8px; border-radius: 2px; margin-right: 6px; }
+/* the switchboard: agents at the edges, you in the middle, two wires a side */
+.board { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) 190px minmax(0, 1fr) minmax(0, 1.15fr); align-items: center; padding: 6px 0 4px; }
+.agent { display: grid; gap: 2px; padding: 18px 18px 16px; border-radius: 12px; background: var(--night-2); box-shadow: inset 0 0 0 1.5px transparent; transition: box-shadow 300ms, opacity 300ms; }
+.agent b { font-size: 21px; font-weight: 900; letter-spacing: -.03em; line-height: 1.1; }
+.agent small { font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: #8e8e94; }
+.status { margin-top: 12px; font: 500 12.5px/1.35 var(--mono); color: #c4c4c8; }
+.status::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; background: #5c5c62; vertical-align: 1px; }
+.working .status::before { background: var(--lime); animation: blink 1.2s ease-in-out infinite; }
+.waiting { box-shadow: inset 0 0 0 1.5px var(--hot); }
+.waiting .status { color: var(--hot); }
+.waiting .status::before { background: var(--hot); }
+.idle { opacity: .55; }
+@keyframes blink { 50% { opacity: .3; } }
 
-.log { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; height: 150px; overflow: hidden; }
-.log li { display: none; align-items: baseline; gap: 10px; padding: 10px 14px; border-radius: 8px; background: var(--night-2); border-left: 3px solid #5a5a60; font-size: 15px; line-height: 1.35; }
-.log li.on { display: flex; order: calc(0 - var(--i)); }
-.log li.old { opacity: .5; }
-.log li.old2 { opacity: .28; }
-.log li.fresh { animation: toast 420ms cubic-bezier(.3, 0, .2, 1); }
-@keyframes toast { from { opacity: 0; transform: translateY(-14px); } }
-.no { flex: none; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; align-self: center; font: 600 11px var(--mono); background: #fff; color: var(--ink); }
+.wires { display: grid; gap: 30px; padding: 0 10px; }
+.wire { position: relative; display: grid; gap: 6px; }
+.wl { min-height: 16px; font: 500 12px var(--mono); letter-spacing: .02em; color: #fff; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wire i { position: relative; display: block; height: 2px; background: rgba(255, 255, 255, .14); }
+.wire i::after { content: ''; position: absolute; top: -5px; border: 6px solid transparent; }
+/* left side: messages run right into you, and back out left; the right side mirrors it */
+.left .in i::after, .right .out i::after { right: -2px; border-left: 9px solid rgba(255, 255, 255, .14); border-right: 0; }
+.left .out i::after, .right .in i::after { left: -2px; border-right: 9px solid rgba(255, 255, 255, .14); border-left: 0; }
+.live i { background: var(--c); }
+.live.relay { --c: var(--hot); }
+.live.decide { --c: var(--you); }
+.live.brief { --c: #fff; }
+.left .in.live i::after, .right .out.live i::after { border-left-color: var(--c); }
+.left .out.live i::after, .right .in.live i::after { border-right-color: var(--c); }
+.live i::before { content: ''; position: absolute; top: -3px; width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 12px var(--c); animation: run 1.4s cubic-bezier(.4, 0, .2, 1) infinite; }
+.left .in i::before, .right .out i::before { --from: 0%; --to: calc(100% - 8px); }
+.left .out i::before, .right .in i::before { --from: calc(100% - 8px); --to: 0%; }
+@keyframes run { from { left: var(--from); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } to { left: var(--to); opacity: 0; } }
+
+.me { display: grid; justify-items: center; gap: 10px; text-align: center; }
+.dot { width: 104px; height: 104px; border-radius: 50%; display: grid; place-items: center; background: var(--hot); color: var(--ink); font-size: 26px; font-weight: 900; letter-spacing: -.04em; box-shadow: 0 0 0 0 rgba(255, 90, 31, .5); transition: background 300ms; }
+.me.relay .dot { animation: ring 1.6s ease-out infinite; }
+.me.decide .dot { background: var(--you); animation: ring-dec 1.6s ease-out infinite; }
+.me.brief .dot { background: #fff; }
+@keyframes ring { from { box-shadow: 0 0 0 0 rgba(255, 90, 31, .55); } to { box-shadow: 0 0 0 22px rgba(255, 90, 31, 0); } }
+@keyframes ring-dec { from { box-shadow: 0 0 0 0 rgba(154, 92, 255, .6); } to { box-shadow: 0 0 0 22px rgba(154, 92, 255, 0); } }
+.act { font: 500 12.5px var(--mono); color: #fff; max-width: 190px; }
+.decide .act { color: var(--you-soft); }
+.tally { display: flex; gap: 5px; }
+.tally i { width: 12px; height: 12px; border-radius: 3px; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .22); transition: background 300ms; }
+.tally i.t-relay { background: var(--hot); box-shadow: none; }
+.tally i.t-dec { background: var(--you); box-shadow: none; }
+
+/* the interruption being told, one line under the switchboard */
+.card, .sum { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--night-rule); min-height: 92px; }
+.card { display: grid; grid-template-columns: 96px minmax(0, 380px) minmax(0, 1fr); gap: 28px; align-items: baseline; }
+.c-n { margin: 0; font: 500 13px var(--mono); color: #8e8e94; }
+.c-n b { font: 900 30px var(--sans); letter-spacing: -.05em; color: #fff; margin-right: 4px; }
+.c-h { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -.03em; line-height: 1.15; }
+.c-w { margin: 6px 0 0; font: 500 12px/1.45 var(--mono); color: #9a9aa0; }
+.c-p { margin: 0; font-size: 17px; line-height: 1.45; color: #fff; }
+.tag { display: inline-block; margin-right: 10px; font: 500 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 3px 7px; border-radius: 3px; background: #3a3a40; color: #c4c4c8; vertical-align: 2px; }
+.tag.dec { background: var(--you); color: var(--ink); }
+
+.sum { display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+.sum p { margin: 0; font-size: 26px; line-height: 1.2; letter-spacing: -.03em; color: #d2d2d6; max-width: 52ch; }
+.sum b { color: #fff; font-weight: 900; }
+.sum .then { max-width: none; font: 500 12px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--lime); }
+.then span { color: #fff; margin: 0 6px; }
+
+/* the notifications, as a list: only where the switchboard can't be drawn */
+.log { display: none; list-style: none; margin: 16px 0 0; padding: 0; flex-direction: column; gap: 6px; }
+.log li { display: flex; align-items: baseline; gap: 10px; padding: 10px 14px; border-radius: 8px; background: var(--night-2); font-size: 15px; line-height: 1.35; }
+.no { flex: none; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; align-self: center; font: 600 11px var(--mono); background: var(--hot); color: var(--ink); }
 .t { flex: none; font: 500 11px var(--mono); color: #9a9aa0; }
 .who { flex: none; font-weight: 800; }
 .msg { color: #d2d2d6; min-width: 0; }
 .you { margin-left: auto; padding-left: 16px; font-size: 14px; color: #fff; text-align: right; }
-.tag { flex: none; order: 9; font: 500 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; background: #3a3a40; color: #c4c4c8; }
-.log li.dec { border-left-color: var(--hot); }
-.log li.dec .no { background: var(--hot); }
-.log li.dec .tag { background: var(--hot); color: var(--ink); }
-.log li.start { border-left-color: #fff; }
-
-.sum { display: none; border-top: 1px solid var(--night-rule); }
-.sum p { margin: 0; font-size: 28px; line-height: 1.2; letter-spacing: -.03em; color: #d2d2d6; max-width: 48ch; }
-.sum b { color: #fff; font-weight: 900; }
-.sum .then { max-width: none; font: 500 12px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--lime); }
-.then span { color: #fff; margin: 0 6px; }
-.done .log { display: none; }
-.done .sum { display: flex; flex-direction: column; justify-content: center; gap: 12px; height: 150px; margin-top: 16px; }
+.log .tag { flex: none; order: 9; margin: 0; }
+.log li.dec .no, .log li.dec .tag { background: var(--you); color: var(--ink); }
+.log li.start .t { color: #fff; }
 
 @media (max-width: 1100px) {
   .head { gap: 36px; }
   .nums b { font-size: 44px; }
+  .card { grid-template-columns: 80px minmax(0, 1fr); }
+  .c-p { grid-column: 2; }
 }
 @media (max-width: 900px) {
   .head { grid-template-columns: minmax(0, 1fr); gap: 40px; }
-}
-@media (max-width: 900px), (max-height: 619px), (prefers-reduced-motion: reduce), (scripting: none) {
-  .log { height: auto; }
-  .log li { display: flex; opacity: 1 !important; order: 0 !important; }
-  .done .log { display: flex; }
-  .done .sum { height: auto; padding-top: 16px; }
+  .board, .card, .clock { display: none; }
+  .log { display: flex; }
+  .sum { min-height: 0; }
 }
 @media (max-width: 760px) {
   .nums b { font-size: 40px; }
   .day { padding: 16px; }
-  .day-h, .lane { grid-template-columns: 76px minmax(0, 1fr); gap: 8px; }
   .log li { flex-wrap: wrap; }
   .you { margin-left: 30px; padding-left: 0; text-align: left; flex-basis: 100%; }
   .sum p { font-size: 22px; }
-  .lane > span { font-size: 10.5px; }
-  .key { margin-left: 0; }
 }

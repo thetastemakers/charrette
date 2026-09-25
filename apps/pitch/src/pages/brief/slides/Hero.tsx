@@ -13,10 +13,18 @@ import s from './Hero.module.css'
 
 const SIZES = '(min-width: 1200px) 1180px, calc(100vw - 32px)'
 
-/* The opening copy lifts away and the product rises into its place. */
+/** Screens of scroll after the last step, while the board sinks into the dark of the next panel. */
+const TAIL = 0.7
+
+/* The opening copy lifts away and the product rises into its place. Then the
+   board sinks back and the panel darkens, so the next one scrolls in on the same ink. */
 function move(p: number, live: boolean, el: HTMLElement): void {
-  el.style.setProperty('--p', live ? p.toFixed(4) : '0')
-  el.style.setProperty('--q', live ? clamp((p - 0.1) / 0.75).toFixed(4) : '1')
+  const y = live ? (p * Math.max(0, el.offsetHeight - window.innerHeight)) / window.innerHeight : 0
+  const r = clamp((y - 1) / TAIL)
+  el.style.setProperty('--p', clamp(y).toFixed(4))
+  el.style.setProperty('--q', live ? clamp((y - 0.1) / 0.75).toFixed(4) : '1')
+  el.style.setProperty('--r', r.toFixed(4))
+  el.dataset.tone = r > 0.5 ? 'dark' : 'light'
 }
 
 export function Hero() {

@@ -27,7 +27,7 @@ export function Ladder() {
           <li style={vars({ '--h': 160 })}>
             <div className={s.tread}>
               <svg viewBox="0 0 200 90" aria-hidden="true">
-                <circle className={s.gy} cx="36" cy="45" r="13" />
+                <circle className={s.gi} cx="36" cy="45" r="13" />
                 <rect className={s.gb} x="118" y="6" width="64" height="20" rx="4" />
                 <rect className={s.gb} x="118" y="35" width="64" height="20" rx="4" />
                 <rect className={s.gb} x="118" y="64" width="64" height="20" rx="4" />
@@ -52,46 +52,33 @@ export function Ladder() {
             <p>The same steps every time, whether they’re needed or not.</p>
             <span className={s.rW}>Workflow features, CI</span>
           </li>
-          <li className={s.us} style={vars({ '--h': 268 })}>
+          <li className={s.us} style={vars({ '--h': 300 })}>
             <div className={s.tread}>
-              <svg viewBox="0 0 200 90" aria-hidden="true">
-                <rect className={s.gb} x="4" y="10" width="36" height="22" rx="4" />
-                <rect className={s.gb} x="56" y="10" width="36" height="22" rx="4" />
-                <rect className={s.gb} x="108" y="10" width="36" height="22" rx="4" />
-                <rect className={s.gb} x="160" y="10" width="36" height="22" rx="4" />
-                <path className={s.gl} d="M40 21 H56 M92 21 H108 M144 21 H160" />
-                <rect className={s.ga} x="108" y="58" width="36" height="22" rx="4" />
-                <rect className={s.ga} x="160" y="58" width="36" height="22" rx="4" />
-                <path className={s.gad} d="M126 32 V58 M144 69 H160" />
+              <svg viewBox="0 0 280 110" aria-hidden="true">
+                <rect className={s.gm} x="4" y="92" width="272" height="14" rx="3" />
+                <rect className={s.gb} x="4" y="12" width="44" height="24" rx="4" />
+                <rect className={s.gb} x="70" y="12" width="44" height="24" rx="4" />
+                <rect className={s.gb} x="136" y="12" width="44" height="24" rx="4" />
+                <rect className={s.gb} x="232" y="12" width="44" height="24" rx="4" />
+                <path className={s.gl} d="M48 24 H70 M114 24 H136 M180 24 H232" />
+                <rect className={s.ga} x="136" y="52" width="44" height="24" rx="4" />
+                <path className={s.gad} d="M158 36 V52" />
+                <circle className={s.gy} cx="210" cy="64" r="11" />
+                <path className={s.gh} d="M180 64 H199 M210 53 V36 H232" />
+                <path className={s.gad} d="M254 36 V92" />
               </svg>
             </div>{' '}
-            <b>Graph from evidence</b>
-            <p>Each result decides the next step. A finding adds a repair; a sensitive file adds an audit.</p>
-            <span className={s.rW}>Charrette</span>
-          </li>
-          <li className={s.us} style={vars({ '--h': 336 })}>
-            <div className={s.tread}>
-              <svg viewBox="0 0 200 90" aria-hidden="true">
-                <rect className={s.gb} x="4" y="4" width="36" height="20" rx="4" />
-                <rect className={s.gb} x="56" y="4" width="36" height="20" rx="4" />
-                <rect className={s.gb} x="108" y="4" width="36" height="20" rx="4" />
-                <rect className={s.gb} x="160" y="4" width="36" height="20" rx="4" />
-                <path className={s.gl} d="M40 14 H56 M92 14 H108 M144 14 H160" />
-                <rect className={s.ga} x="108" y="38" width="36" height="20" rx="4" />
-                <path className={s.gad} d="M126 24 V38" />
-                <circle className={s.gy} cx="178" cy="48" r="10" />
-                <path className={s.gh} d="M144 48 H168" />
-                <rect className={s.gm} x="4" y="72" width="192" height="14" rx="3" />
-              </svg>
-            </div>{' '}
-            <b>Supervision</b>
-            <p>The graph, plus routing across labs, a person only when it matters, and memory the next task inherits.</p>
+            <b>Supervision from evidence</b>
+            <p>
+              Each result decides the next step: a finding adds a repair, a sensitive file adds an audit. Work is routed across labs, a
+              person is asked only when it matters, and what was learned goes into memory the next task inherits.
+            </p>
             <span className={s.rW}>Charrette</span>
           </li>
         </ol>
         <p className={s.cap}>
-          The agent vendors sell steps 1 to 3. Very few tools attempt 4 and 5, and none of them keep the result in a memory the project
-          owns.
+          The agent vendors sell steps 1 to 3. Step 4 is one thing, not two features: the graph, the routing, the person and the memory only
+          work together.
         </p>
       </div>
     </Slide>

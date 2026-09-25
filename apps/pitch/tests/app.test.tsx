@@ -23,7 +23,7 @@ describe('static page routing', () => {
 
   it('renders the complete brief before JavaScript runs', () => {
     const html = renderToString(<App pathname="/" />)
-    expect(html.match(/data-slide=""/g)).toHaveLength(15)
+    expect(html.match(/data-slide=""/g)).toHaveLength(13)
     expect(html).toContain('Agents come and go. The project stays.')
     expect(html).toContain('Seven interruptions. One needed you.')
     expect(html).toContain('Task 418, step by step')
