@@ -3,6 +3,9 @@
 .deck { position: relative; }
 
 :where(.deck) h1 { font-weight: 900; font-size: clamp(58px, 10vw, 156px); line-height: .86; letter-spacing: -.065em; margin: 0 0 52px; max-width: 10ch; }
+/* no one-word last lines: headings balance, running text avoids orphans */
+:where(.deck) :is(h1, h2, h3) { text-wrap: balance; }
+:where(.deck) :is(p, li, dt, dd, td, figcaption) { text-wrap: pretty; }
 :where(.deck) h2 { font-weight: 900; font-size: clamp(36px, 4.6vw, 68px); line-height: .93; letter-spacing: -.055em; margin: 0 0 36px; max-width: 16ch; }
 
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gut); width: 100%; }

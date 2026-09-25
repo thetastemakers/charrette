@@ -78,7 +78,7 @@ export const OPEN: readonly OpenRelease[] = [
   { on: '2026-07-16', name: 'Kimi K3', maker: 'Moonshot AI', lab: 'moonshot', score: 43.6 },
   { on: '2026-07-31', name: 'DeepSeek V4 Flash', maker: 'DeepSeek', lab: 'deepseek', score: 34.3 },
   { on: '2026-08-12', name: 'Qwen3.8', maker: 'Alibaba', lab: 'qwen', score: 39.9 },
-  { on: '2026-08-12', name: 'Motif 3', maker: 'Motif Technologies', score: 33.6 },
+  { on: '2026-08-12', name: 'Motif 3', maker: 'Motif Technologies', lab: 'motif', score: 33.6 },
   { on: '2026-08-13', name: 'DeepSeek V4 Pro 0813', maker: 'DeepSeek', lab: 'deepseek', score: 36.0 },
   { on: '2026-08-14', name: 'Qwen3.8 27B', maker: 'Alibaba', lab: 'qwen', score: 33.7 },
   { on: '2026-08-18', name: 'GLM-5.3', maker: 'Z.ai', lab: 'zai', score: 44.8 },

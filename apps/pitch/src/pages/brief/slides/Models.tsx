@@ -30,12 +30,12 @@ const TOP = LEADERS.at(-1)!
 const BEST_OPEN = OPEN.reduce((a, b) => (b.score > a.score ? b : a))
 const OPEN_LABS = new Set(OPEN.filter((o) => o.on >= '2026').map((o) => o.maker)).size
 
-/** Places release dots on two lanes, nudging a dot right only when both lanes are taken near its date. */
-export function place(ats: readonly number[], gap = 0.022): { x: number; lane: number }[] {
-  const last = [-1, -1]
+/** Places release dots on lanes, nudging a dot right only when every lane is taken near its date. */
+export function place(ats: readonly number[], gap = 0.022, lanes = 2): { x: number; lane: number }[] {
+  const last: number[] = Array.from({ length: lanes }, () => -1)
   return ats.map((at) => {
     const xs = last.map((l) => Math.max(at, l + gap))
-    const lane = xs[1]! < xs[0]! ? 1 : 0
+    const lane = xs.indexOf(Math.min(...xs))
     last[lane] = xs[lane]!
     return { x: xs[lane]!, lane }
   })
@@ -55,6 +55,12 @@ export function Year({ year, state }: { year: number; state: 'seen' | 'now' | 'n
   const { leaders, gain } = yearStats(year)
   const open = openIn(year)
   const spot = place(open.map((o) => o.at))
+  /* a phone's track is a third as wide, so its dots get a wider gap and a third lane */
+  const tight = place(
+    open.map((o) => o.at),
+    0.06,
+    3,
+  )
   const last = year === YEARS.at(-1)
   return (
     <li className={cx(s.year, s[state])}>
@@ -76,9 +82,16 @@ export function Year({ year, state }: { year: number; state: 'seen' | 'now' | 'n
           ))}
           {last && <span className={s.rest} style={vars({ '--from': 1 - LEFT })} />}
         </div>
-        <div className={cx(s.oss, spot.some((d) => d.lane) && s.two)}>
+        <div
+          className={s.oss}
+          style={vars({ '--rows': Math.max(0, ...spot.map((d) => d.lane)) + 1, '--rows-s': Math.max(0, ...tight.map((d) => d.lane)) + 1 })}
+        >
           {open.map((o, j) => (
-            <span key={o.name} className={s.dot} style={vars({ '--at': spot[j]!.x, '--lane': spot[j]!.lane })}>
+            <span
+              key={o.name}
+              className={s.dot}
+              style={vars({ '--at': spot[j]!.x, '--lane': spot[j]!.lane, '--at-s': tight[j]!.x, '--lane-s': tight[j]!.lane })}
+            >
               <Mark lab={o.lab} />
               <Tip name={o.name} by={o.maker} on={o.on} score={o.score} at={o.at} />
             </span>
@@ -154,9 +167,8 @@ export function Models() {
             when the lead changes hands.
           </p>
           <p className={s.src}>
-            Artificial Analysis Intelligence Index v4.3.2, read 25 September 2026: releases that beat every earlier model, and open-weights
-            releases that matched the top of six months before. Most scores before 2026 are their estimates on the current index. Top today:{' '}
-            {TOP.name}, {TOP.score}.
+            Source: Artificial Analysis Intelligence Index v4.3.2, read 25 September 2026. Most scores before 2026 are their estimates on
+            the current index. Top today: {TOP.name}, {TOP.score}.
           </p>
         </div>
       )}

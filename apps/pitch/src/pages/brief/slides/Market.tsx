@@ -134,8 +134,16 @@ export function Market() {
           </table>
         </div>
         <p className={s.key}>
-          <span className={s.kLock}></span>Decided by the vendor <span className={s.kPart}></span>Some choice, inside their product{' '}
-          <span className={s.kFree}></span>Decided by you · simplified, September 2026
+          <span>
+            <i className={s.kLock}></i>Decided by the vendor
+          </span>{' '}
+          <span>
+            <i className={s.kPart}></i>Some choice, inside their product
+          </span>{' '}
+          <span>
+            <i className={s.kFree}></i>Decided by you
+          </span>{' '}
+          <span>Simplified, September 2026</span>
         </p>
         <p className={s.pull}>
           Every automation here is a trigger that starts one agent on one job.{' '}

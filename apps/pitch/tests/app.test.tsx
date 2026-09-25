@@ -25,7 +25,7 @@ describe('static page routing', () => {
     const html = renderToString(<App pathname="/" />)
     expect(html.match(/data-slide=""/g)).toHaveLength(14)
     expect(html).toMatch(/Agents come and go\. <span[^>]*>The project stays\.<\/span><\/h1>/)
-    expect(html).toContain('The developer is the message bus.')
+    expect(html).toContain('The developer is the messenger.')
     expect(html).toContain('The best model now changes every few weeks.')
     expect(html).toContain('Task 418, step by step')
     expect(html).toContain('href="/research/"')

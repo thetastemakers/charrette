@@ -26,9 +26,11 @@ const PATHS = {
 } as const
 
 /** Labs without a mark in the set, drawn as a letter. */
-const LETTERS = { xai: 'x', zai: 'Z' } as const
+const LETTERS = { xai: 'x', zai: 'Z', motif: 'M' } as const
 
 export type Lab = keyof typeof PATHS | keyof typeof LETTERS
+
+const isLetter = (lab: Lab): lab is keyof typeof LETTERS => lab in LETTERS
 
 /** Each lab's name, as a caption. */
 export const LAB_NAME: Record<Lab, string> = {
@@ -37,6 +39,7 @@ export const LAB_NAME: Record<Lab, string> = {
   google: 'Google',
   xai: 'xAI',
   zai: 'Z.ai',
+  motif: 'Motif Technologies',
   deepseek: 'DeepSeek',
   moonshot: 'Moonshot AI',
   qwen: 'Alibaba',
@@ -66,7 +69,7 @@ export function labOf(name: string): Lab | undefined {
 /** A lab's mark at text size, decorative: the name always sits beside it. */
 export function Mark({ lab, className }: { lab: Lab | undefined; className?: string }) {
   if (!lab) return null
-  if (lab === 'xai' || lab === 'zai') {
+  if (isLetter(lab)) {
     return (
       <span className={cx(s.mark, s.letter, className)} aria-hidden="true">
         {LETTERS[lab]}
@@ -82,7 +85,7 @@ export function Mark({ lab, className }: { lab: Lab | undefined; className?: str
 
 /** A lab's mark placed inside a larger drawing, at a point and size in its units. */
 export function MarkAt({ lab, x, y, size }: { lab: Lab | undefined; x: number; y: number; size: number }) {
-  if (!lab || lab === 'xai' || lab === 'zai') return null
+  if (!lab || isLetter(lab)) return null
   return (
     <svg className={cx(s.mark, s[lab])} x={x} y={y} width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
       <path d={PATHS[lab]} />

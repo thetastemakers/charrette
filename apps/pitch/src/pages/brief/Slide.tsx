@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 
 import { cx } from '../../lib/cx'
 import { vars } from '../../lib/vars'
@@ -38,9 +38,25 @@ interface PinProps extends SlideProps {
   children: (step: number) => ReactNode
 }
 
+/** Shrinks a pinned panel's content to fit a short screen, since the part below the fold could never be scrolled to.
+   Panels with several layers (the hero) size themselves. */
+function fit(stick: HTMLElement, on: boolean): void {
+  const content = stick.children.length === 1 ? (stick.firstElementChild as HTMLElement) : null
+  let f = 1
+  if (on && content?.offsetHeight) {
+    const cs = getComputedStyle(stick)
+    const room = stick.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom)
+    f = Math.min(1, room / content.offsetHeight)
+  }
+  const v = f.toFixed(3)
+  if (stick.style.getPropertyValue('--fit') !== v) stick.style.setProperty('--fit', v)
+}
+
 /** A panel that holds still for several screens of scroll while its figure plays. */
 export function Pin({ id, tone, name, className, steps, stickClassName, after, onProgress, children }: PinProps) {
   const ref = useRef<HTMLElement>(null)
+  const stick = useRef<HTMLDivElement>(null)
+  const shown = useRef(false)
   const [step, setStep] = useState(steps - 1)
   const progress = useRef(onProgress)
   useEffect(() => {
@@ -58,9 +74,15 @@ export function Pin({ id, tone, name, className, steps, stickClassName, after, o
         const p = live ? pinProgress(r.top, r.height, vh) : 1
         progress.current?.(p, live, el)
         setStep(stepAt(p, steps))
+        shown.current = live && r.top < vh && r.bottom > 0
+        if (stick.current) fit(stick.current, shown.current)
       }),
     [steps],
   )
+  /* a step can change the content's height, so measure again once it has rendered */
+  useLayoutEffect(() => {
+    if (stick.current) fit(stick.current, shown.current)
+  }, [step])
 
   return (
     <section
@@ -72,7 +94,9 @@ export function Pin({ id, tone, name, className, steps, stickClassName, after, o
       data-tone={tone}
       data-name={name}
     >
-      <div className={cx(s.stick, stickClassName)}>{children(step)}</div>
+      <div ref={stick} className={cx(s.stick, stickClassName)}>
+        {children(step)}
+      </div>
       {after}
       {Array.from({ length: steps }, (_, k) => (
         <i key={k} className={s.snap} style={{ top: `${k * 100}vh` }} aria-hidden="true" />

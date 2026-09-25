@@ -60,7 +60,7 @@ export function Checklist({ k }: { k: number }) {
 
 export function Morning() {
   return (
-    <Pin id="bus" tone="light" name="The message bus" className={s.p2} steps={STEPS}>
+    <Pin id="bus" tone="light" name="The messenger" className={s.p2} steps={STEPS}>
       {(k) => {
         const sum = handTotals(Math.min(k, HAND.length))
         const done = k > HAND.length
@@ -68,7 +68,7 @@ export function Morning() {
           <div className={cx(ui.wrap, s.grid)}>
             <div>
               <p className={cx(ui.kicker, s.kicker)}>The problem · Attention</p>
-              <h2>The developer is the message bus.</h2>
+              <h2>The developer is the messenger.</h2>
               <p className={cx(ui.body, s.body)}>
                 You know the steps a fix should go through. Run them by hand and every hand-off waits for you to notice, and every step
                 depends on you remembering it.

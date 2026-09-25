@@ -193,6 +193,12 @@ describe('Models', () => {
       { x: 0.5, lane: 1 },
       { x: 0.52, lane: 0 },
     ])
+    expect(place([0.5, 0.5, 0.5, 0.5], 0.06, 3)).toEqual([
+      { x: 0.5, lane: 0 },
+      { x: 0.5, lane: 1 },
+      { x: 0.5, lane: 2 },
+      { x: 0.56, lane: 0 },
+    ])
   })
 })
 

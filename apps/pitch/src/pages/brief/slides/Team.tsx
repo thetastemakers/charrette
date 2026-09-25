@@ -215,15 +215,12 @@ export function Board({ className }: { className?: string }) {
                 <div key={`${t.id}-${t.step}`} className={s.card}>
                   <span className={s.id}>{t.id}</span>
                   <b>{t.title}</b>
-                  <span className={s.step}>
-                    {t.step}
-                    {t.agent && (
-                      <>
-                        {' · '}
-                        <Mark lab={labOf(t.agent)} /> {t.agent}
-                      </>
-                    )}
-                  </span>
+                  <span className={s.step}>{t.step}</span>
+                  {t.agent && (
+                    <span className={s.step}>
+                      <Mark lab={labOf(t.agent)} /> {t.agent}
+                    </span>
+                  )}
                   {t.note && <span className={s.cnote}>{t.note}</span>}
                   {t.of !== undefined && <Steps at={t.at ?? 0} of={t.of} />}
                 </div>
